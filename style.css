@@ -1,0 +1,22 @@
+#trivia-board {
+    border: 2px solid black;
+    border-radius: 10px;
+    text-align: center;
+    background-color: black;
+}
+
+.cell {
+    background-color: #3eadf7;
+    border: 2px solid black;
+    border-radius: 4px;
+    padding: 15px 0px 15px 0px;
+    text-align: center;
+}
+
+.category {
+    background-color: #3eadf7;
+    border: 2px solid black;
+    border-radius: 4px;
+    padding: 15px;
+    text-align: center;
+}
