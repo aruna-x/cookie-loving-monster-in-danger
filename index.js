@@ -1,5 +1,46 @@
+const jServiceCategories = {
+    "Potpourri": 306,
+    "Stupid Answers": 136,
+    "Sports": 42,
+    "American History": 780,
+    "Animals": 21,
+    "3 Letter Words": 105,
+    "Science": 25,
+    "Transportation": 103,
+    "U.S. Cities": 7,
+    "People": 442,
+    "Television": 67,
+    "Food": 49,
+    "State Capitals": 109,
+    "History": 114,
+    "The Bible": 31
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const categories = document.querySelectorAll('.category');
+    const jCategoryArrayKeys = Object.keys(jServiceCategories);
+    const uniqueCategories= [];
+    categories.forEach((category)=>{
+        checkUnique(category);
+    });
+
+    function checkUnique(category) {
+        if (uniqueCategories.length === 5) { return; }
+
+        const randomKey = jCategoryArrayKeys[Math.floor(Math.random() * jCategoryArrayKeys.length)]
+        const redundantKey = Boolean(uniqueCategories.find((el)=> el === randomKey));
+        if (redundantKey) {
+            checkUnique(category);
+            return;
+        }
+        else if (!redundantKey) {
+            uniqueCategories.push(randomKey);
+            category.textContent = randomKey;
+            return;
+        }
+    }
+
     const cells = document.querySelectorAll('.cell');
 
     // categories.forEach(() => {})
@@ -58,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Takes a category and difficulty and returns a question
     function apiCall(category, difficultyValue) {
         // TODO pull in categories for a session, and pass in the object here. It will have an id.
-        const category_id = '1892';
+        const category_id = jServiceCategories[category];
         fetch(`https://jservice.io/api/category?id=${category_id}`)        
             .then(r => r.json())
             .then(categoryObj => {
@@ -74,5 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function placeQuestion(question) {
         let questionContainer = document.getElementById('question');
         questionContainer.textContent = question.question;
+        
     }
 });
