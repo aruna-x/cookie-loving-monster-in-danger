@@ -20,8 +20,8 @@ const jServiceCategories = {
 document.addEventListener("DOMContentLoaded", () => {
     const categories = document.querySelectorAll('.category');
     const jCategoryArrayKeys = Object.keys(jServiceCategories);
-    const uniqueCategories= [];
-    categories.forEach((category)=>{
+    const uniqueCategories = [];
+    categories.forEach((category) => {
         checkUnique(category);
     });
 
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (uniqueCategories.length === 5) { return; }
 
         const randomKey = jCategoryArrayKeys[Math.floor(Math.random() * jCategoryArrayKeys.length)]
-        const redundantKey = Boolean(uniqueCategories.find((el)=> el === randomKey));
+        const redundantKey = Boolean(uniqueCategories.find((el) => el === randomKey));
         if (redundantKey) {
             checkUnique(category);
             return;
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cells = document.querySelectorAll('.cell');
 
     // categories.forEach(() => {})
-    cells.forEach((cell)=>{
+    cells.forEach((cell) => {
         cell.addEventListener("click", (e) => {
             const thisCell = e.target;
             const cellClassList = thisCell.classList;
@@ -100,11 +100,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function apiCall(category, difficultyValue) {
         // TODO pull in categories for a session, and pass in the object here. It will have an id.
         const category_id = jServiceCategories[category];
-        fetch(`https://jservice.io/api/category?id=${category_id}`)        
+        fetch(`https://jservice.io/api/category?id=${category_id}`)
             .then(r => r.json())
             .then(categoryObj => {
                 let clueList = categoryObj.clues.filter(x => {
-                    return((x.value <= difficultyValue) && (x.value > difficultyValue-200));
+                    return ((x.value <= difficultyValue) && (x.value > difficultyValue - 200));
                 });
                 question = clueList[Math.floor(Math.random() * clueList.length)];
                 placeQuestion(question);
@@ -115,6 +115,33 @@ document.addEventListener("DOMContentLoaded", () => {
     function placeQuestion(question) {
         let questionContainer = document.getElementById('question');
         questionContainer.textContent = question.question;
-        
+        console.log(question.answer)
+
+        const form = document.getElementById('form')
+        const eventListener = form.addEventListener('submit', e => {
+            e.preventDefault()
+            const answerInput = document.getElementById('answer').value
+            const difficulty = question.value
+
+            if (difficulty > 400) {
+                monsterMove = "3 steps"
+            } else if (difficulty > 200 && difficulty <= 400) {
+                monsterMove = "2 steps"
+            } else if (difficulty <= 200) {
+                monsterMove = "1 step"
+            }
+
+            if (answerInput === question.answer) {
+                console.log(`Move cookie monster forward ${monsterMove}`)
+            }
+            else {
+                console.log(`Move cookie monster backward ${monsterMove}`)
+            }
+            form.removeEventListener("submit", eventListener);
+        });
     }
+
+
 });
+
+
