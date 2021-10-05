@@ -110,19 +110,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 placeQuestion(question);
             })
             .catch(e => console.error(`There was an error with fetch in apiCall: ${e}`));
-    }
+        }
 
-    function placeQuestion(question) {
-        let questionContainer = document.getElementById('question');
-        questionContainer.textContent = question.question;
-        console.log(question.answer)
+        let latestQuestion;
 
+        function placeQuestion(question) {
+            latestQuestion = question;
+            let questionContainer = document.getElementById('question');
+            questionContainer.textContent = question.question;
+            console.log(question.answer);
+            console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
+        }
+        
         const form = document.getElementById('form')
-        const eventListener = form.addEventListener('submit', e => {
-            e.preventDefault()
-            const answerInput = document.getElementById('answer').value
-            const difficulty = question.value
-
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const answerInput = document.getElementById('answer').value;
+            console.log(answerInput);
+            const difficulty = latestQuestion.value
+        
             if (difficulty > 400) {
                 monsterMove = "3 steps"
             } else if (difficulty > 200 && difficulty <= 400) {
@@ -130,18 +136,21 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (difficulty <= 200) {
                 monsterMove = "1 step"
             }
-
-            if (answerInput === question.answer) {
+            
+            const formattedAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, '');
+            const correctAnswer = formattedAnswer.toLowerCase();
+            const finalAnswer = answerInput.toLowerCase();
+            if (finalAnswer === correctAnswer) {
                 console.log(`Move cookie monster forward ${monsterMove}`)
             }
             else {
                 console.log(`Move cookie monster backward ${monsterMove}`)
             }
-            form.removeEventListener("submit", eventListener);
         });
-    }
+        
 
 
 });
+
 
 

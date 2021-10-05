@@ -74,7 +74,8 @@ body {
     border-radius: 5px;
     box-shadow: #000000;
     color:rgba(255, 255, 255, 0.925);
-    }
+    /* visibility: hidden; */
+}
 
 #form {
     /* visibility: hidden; */
