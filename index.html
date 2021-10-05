@@ -9,46 +9,74 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="progress-bar"></div>
-    <div id="wrap-board">
-        <table id="trivia-board">
-            <thead id="categories">
-                <th id="category1" class="category">Category 1</th>
-                <th id="category2" class="category">Category 2</th>
-                <th id="category3" class="category">Category 3</th>
-                <th id="category4" class="category">Category 4</th>
-                <th id="category5" class="category">Category 5</th>
-            </thead>
-            <tbody>
-                <tr> 
-                    <td class="cell category-1-cell">Easy</td>
-                    <td class="cell category-2-cell">Easy</td>
-                    <td class="cell category-3-cell">Easy</td>
-                    <td class="cell category-4-cell">Easy</td>
-                    <td class="cell category-5-cell">Easy</td> 
-                </tr>
-                <tr> 
-                    <td class="cell category-1-cell">Medium</td>
-                    <td class="cell category-2-cell">Medium</td>
-                    <td class="cell category-3-cell">Medium</td>
-                    <td class="cell category-4-cell">Medium</td>
-                    <td class="cell category-5-cell">Medium</td> 
-                </tr>
-                <tr> 
-                    <td class="cell category-1-cell">Hard</td>
-                    <td class="cell category-2-cell">Hard</td>
-                    <td class="cell category-3-cell">Hard</td>
-                    <td class="cell category-4-cell">Hard</td>
-                    <td class="cell category-5-cell">Hard</td> 
-                </tr>
-            </tbody>
-        </table>
-        <div id="question">GIMME COOKIES!</div>
-        <form id="form">
-            <input type="text" id="answer" placeholder="Type your answer here..."/>
-            <button type="submit" id="submit">submit</button>
-        </form>
-        
+    <div id="wrap-main">
+
+        <div id="progress-bar" class="space-above"></div>
+
+        <div id="wrap-board" class="space-above">
+            <table id="trivia-board">
+                <thead id="categories">
+                    <th id="category1" class="category">Category 1</th>
+                    <th id="category2" class="category">Category 2</th>
+                    <th id="category3" class="category">Category 3</th>
+                    <th id="category4" class="category">Category 4</th>
+                    <th id="category5" class="category">Category 5</th>
+                </thead>
+                <tbody>
+                    <!-- <tr> 
+                        <td class="cell category-1-cell">Easy</td>
+                        <td class="cell category-2-cell">Easy</td>
+                        <td class="cell category-3-cell">Easy</td>
+                        <td class="cell category-4-cell">Easy</td>
+                        <td class="cell category-5-cell">Easy</td> 
+                    </tr>
+                    <tr> 
+                        <td class="cell category-1-cell">Medium</td>
+                        <td class="cell category-2-cell">Medium</td>
+                        <td class="cell category-3-cell">Medium</td>
+                        <td class="cell category-4-cell">Medium</td>
+                        <td class="cell category-5-cell">Medium</td> 
+                    </tr>
+                    <tr> 
+                        <td class="cell category-1-cell">Hard</td>
+                        <td class="cell category-2-cell">Hard</td>
+                        <td class="cell category-3-cell">Hard</td>
+                        <td class="cell category-4-cell">Hard</td>
+                        <td class="cell category-5-cell">Hard</td> 
+                    </tr> -->
+
+                    <tr>
+                        <td colspan="5"><div id="wrap-question-form-in-table">
+                            <!-- <div id="wrap-cookie-bite">
+                                <div id="circle1"></div>
+                                <div id="circle2"></div>
+                                <div id="circle3"></div>
+                            </div> -->
+                            <div id="question-in-table">GIMME COOKIES!</div>
+                            <img id="hungry-monster" src="" />
+                            <form id="form">
+                                <input type="text" id="answer-in-table" placeholder="Type your answer here..."/>
+                                <button type="submit" id="submit-in-table">Submit</button>
+                            </form>
+                        </div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="wrap-question-form" class="space-above">
+            <div id="wrap-cookie-bite">
+                <div id="circle1"></div>
+                <div id="circle2"></div>
+                <div id="circle3"></div>
+            </div>
+            <div id="question">GIMME COOKIES!</div>
+            <img id="hungry-monster" src="" />
+            <form id="form">
+                <input type="text" id="answer" placeholder="Type your answer here..."/>
+                <button type="submit" id="submit">Submit</button>
+            </form>
+        </div>
+
     </div>
 </body>
 </html>
