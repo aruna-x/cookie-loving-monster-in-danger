@@ -1,23 +1,17 @@
-/* #wrap-board {
-    text-align: center;
-} */
-
 #trivia-board {
     border: 2px solid black;
     border-radius: 10px;
     text-align: center;
     background-color: black;
     width: 75%;
-    /* display: inline-block; */
 }
 
 .cell {
     background-color: #3eadf7;
-    /* border: 2px solid black; */
     border-radius: 4px;
     padding: 15px 0px 15px 0px;
     text-align: center;
-    font-family: Stencil Std, fantasy;
+    font-family: Impact;
     font-size: 2em;
     color: rgb(250, 250, 92);
     border-collapse: collapse;
@@ -28,13 +22,11 @@
 }
 
 .category {
-    /* background-color: #3eadf7; */
-    /* border: 2px solid black; */
     border-radius: 4px;
     padding: 15px;
     text-align: center;
     color: #e5f4fd;
-    font-family: Stencil Std, fantasy;
+    font-family: Impact;
     font-size: 2em;
     border-collapse: collapse;
     background:linear-gradient(top, #3eadf7 0%, #2f3c58 100%);
@@ -46,15 +38,5 @@
     box-shadow: inset 1px 1px 150px whitesmoke;
     cursor: pointer;
   }
-
-/* or 
-.cell:hover {
-    box-shadow: 0 0 30px rgb(172, 221, 240);
-  }
-
-or
-/* .cell:hover {
-    box-shadow: inset 0 0 0 10px #10b7ec, inset 0 0 0 14px #fff;
-} */
 
 
