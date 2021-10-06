@@ -18,6 +18,9 @@ const jServiceCategories = {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Start out with the button diabled
+    document.getElementById('submit').disabled = true;
+
     const categories = document.querySelectorAll('.category');
     const jCategoryArrayKeys = Object.keys(jServiceCategories);
     const uniqueCategories = [];
@@ -43,11 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cells = document.querySelectorAll('.cell');
 
-    // categories.forEach(() => {})
     cells.forEach((cell) => {
         cell.addEventListener("click", (e) => {
-            document.getElementById('answer').focus();
+            // When a clue is clicked, enable the button and automatically move cursor to answer input field
             document.getElementById('answer').value = "";
+            document.getElementById('submit').disabled = false;
+            document.getElementById('submit').style.background = '#bea671';
+            document.getElementById('submit').textContent="Submit";
+            document.getElementById('answer').focus();
             const thisCell = e.target;
             const cellClassList = thisCell.classList;
             questionSwitch(thisCell, cellClassList);
@@ -136,21 +142,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 monsterMove = 10;
             }
             
-            const formattedAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, '');
-            const correctAnswer = formattedAnswer.toLowerCase();
-            const finalAnswer = answerInput.toLowerCase();
-            if (finalAnswer === correctAnswer) {
+            const checkMatch = stringAnalysis(latestQuestion, answerInput);
+
+            if (checkMatch) {
                 moveMonster(monsterMove, "forward");
             }
             else {
                 moveMonster(monsterMove, "backward");
             }
+
+            // const formattedAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, '');
+            // const correctAnswer = formattedAnswer.toLowerCase();
+            // const finalAnswer = answerInput.toLowerCase();
+
+            // if (finalAnswer === correctAnswer) {
+            //     moveMonster(monsterMove, "forward");
+            // }
+            // else {
+            //     moveMonster(monsterMove, "backward");
+            // }
         });
-        
+
         function moveMonster(monsterMove, direction) {
             let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
             let monsterLeftNum = parseInt(monsterLeft, 10);
             if (direction === "forward"){
+                document.getElementById('submit').textContent="Yes!!";
+                document.getElementById('submit').style.background="rgba(8, 141, 8, 0.514)";
                 const left = monsterLeftNum + monsterMove;
                 if (left>=90){
                     document.getElementById("cookie-monster").style.marginLeft = `90%`;
@@ -161,6 +179,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
             else if (direction === "backward"){
+                document.getElementById('submit').textContent="Oh no ...";
+                document.getElementById('submit').style.background="rgba(255, 0, 0, 0.3)";
                 const left = monsterLeftNum - monsterMove;
                 if (left<0){
                     document.getElementById("cookie-monster").style.marginLeft = `0%`;
@@ -169,9 +189,79 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
                 }
             }
+            // diable the submit button until a new clue is clicked and empty the answer area
+            document.getElementById('submit').disabled = true;
         }
-
 });
 
+/**
+ *  HELPER FUNCTIONS
+ */
+
+// Strings matching analysis
+function stringAnalysis(latestQuestion, answerInput) {
+    // I'm using regex here. Test of puncuation removal:
+    // console.log(`<em>~!@#$%^&*!@#$%^&*()_-+={.,,,....}|:";'<>"'(),:;+.Hello World!</em>`.replace(/<[^>]*>?/gm, '').replace(/[~!@#$%^&*()_+-={}|;"']/g, ''));
+
+    // remove puncuation and awkward markup tags from the ANSWER from the API
+    const noPunctuationAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/[~!@#$%^&*()_+-={}|;"']/g, '');
+    const lowerCaseAnswer = noPunctuationAnswer.toLowerCase();
+
+    // remove puncuation and awkward markup tags from the INPUT from the USER
+    const noPunctuationInput = answerInput.replace(/<[^>]*>?/gm, '').replace(/[~!@#$%^&*()_+-={}|;"']/g, '');
+    const lowerCaseInput = noPunctuationInput.toLowerCase();
+    console.log(lowerCaseInput);
+
+    // Get Levenshtein distance (criteria < 2 ?)
+    // This accounts for misspellings
+    const levDist = levenshteinDistance(lowerCaseAnswer, lowerCaseInput);
+    console.log(`levDist: ${levDist}`);
+
+    // Get longest matching string (criteria >= 5 ?)
+    // This accounts for missing words
+    const substring = commonSubstring([lowerCaseAnswer, lowerCaseInput]);
+    console.log(`substring: ${substring}`);
 
 
+    // If Lev dist is < 2 -OR- longest matching string >= 5, assume good answer. Test.
+
+}
+
+// Calculates Levenshtein Distance (num of insertions, deletions, and subs)
+const levenshteinDistance = (str1 = '', str2 = '') => {
+   const track = Array(str2.length + 1).fill(null).map(() =>
+   Array(str1.length + 1).fill(null));
+   for (let i = 0; i <= str1.length; i += 1) {
+      track[0][i] = i;
+   }
+   for (let j = 0; j <= str2.length; j += 1) {
+      track[j][0] = j;
+   }
+   for (let j = 1; j <= str2.length; j += 1) {
+      for (let i = 1; i <= str1.length; i += 1) {
+         const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
+         track[j][i] = Math.min(
+            track[j][i - 1] + 1, // deletion
+            track[j - 1][i] + 1, // insertion
+            track[j - 1][i - 1] + indicator, // substitution
+         );
+      }
+   }
+   return track[str2.length][str1.length];
+};
+
+// Calculates the longest matching substring given an array of strings
+function commonSubstring(words){
+    var iChar, iWord,
+        refWord = words[0],
+        lRefWord = refWord.length,
+        lWords = words.length;
+    for (iChar = 0; iChar < lRefWord; iChar += 1) {
+        for (iWord = 1; iWord < lWords; iWord += 1) {
+            if (refWord[iChar] !== words[iWord][iChar]) {
+                return refWord.substring(0, iChar);
+            }
+        }
+    }
+    return refWord;
+}
