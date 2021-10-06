@@ -11,6 +11,7 @@ body {
 #cookie-monster {
     height: 120px;
     filter: drop-shadow(0px 0px 7px rgba(0,0,0,0.5));
+    /* margin-left is defined in html so we can access it in js ... */
 }
 
 #cookies {

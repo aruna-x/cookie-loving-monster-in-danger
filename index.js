@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // categories.forEach(() => {})
     cells.forEach((cell) => {
         cell.addEventListener("click", (e) => {
+            document.getElementById('answer').focus();
+            document.getElementById('answer').value = "";
             const thisCell = e.target;
             const cellClassList = thisCell.classList;
             questionSwitch(thisCell, cellClassList);
@@ -130,25 +132,44 @@ document.addEventListener("DOMContentLoaded", () => {
             const difficulty = latestQuestion.value
         
             if (difficulty > 400) {
-                monsterMove = "3 steps"
+                monsterMove = 30;
             } else if (difficulty > 200 && difficulty <= 400) {
-                monsterMove = "2 steps"
+                monsterMove = 20;
             } else if (difficulty <= 200) {
-                monsterMove = "1 step"
+                monsterMove = 10;
             }
             
             const formattedAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, '');
             const correctAnswer = formattedAnswer.toLowerCase();
             const finalAnswer = answerInput.toLowerCase();
             if (finalAnswer === correctAnswer) {
-                console.log(`Move cookie monster forward ${monsterMove}`)
+                console.log(`Move cookie monster forward ${monsterMove} step(s)`)
+                moveMonster(monsterMove, "forward");
             }
             else {
-                console.log(`Move cookie monster backward ${monsterMove}`)
+                console.log(`Move cookie monster backward ${monsterMove} step(s)`)
+                moveMonster(monsterMove, "backward");
             }
         });
         
-
+        function moveMonster(monsterMove, direction) {
+            let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
+            let monsterLeftNum = parseInt(monsterLeft, 10);
+            if (direction === "forward"){
+                const left = monsterLeftNum + monsterMove;
+                if (left>100){document.getElementById("cookie-monster").style.marginLeft = `100%`}
+                else {
+                    document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
+                }
+        }
+            else if (direction === "backward"){
+                const left = monsterLeftNum - monsterMove;
+                if (left<0){document.getElementById("cookie-monster").style.marginLeft = `0%`}
+                else {
+                    document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
+                }
+            }
+        }
 
 });
 
