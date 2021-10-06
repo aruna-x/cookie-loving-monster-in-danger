@@ -100,7 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Takes a category and difficulty and returns a question
     function apiCall(category, difficultyValue) {
-        // TODO pull in categories for a session, and pass in the object here. It will have an id.
         const category_id = jServiceCategories[category];
         fetch(`https://jservice.io/api/category?id=${category_id}`)
             .then(r => r.json())
@@ -120,7 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
             latestQuestion = question;
             let questionContainer = document.getElementById('question');
             questionContainer.textContent = question.question;
-            console.log(question.answer);
             console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
         }
         
@@ -128,8 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
         form.addEventListener('submit', e => {
             e.preventDefault();
             const answerInput = document.getElementById('answer').value;
-            console.log(answerInput);
-            const difficulty = latestQuestion.value
+            const difficulty = latestQuestion.value;
         
             if (difficulty > 400) {
                 monsterMove = 30;
@@ -143,11 +140,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const correctAnswer = formattedAnswer.toLowerCase();
             const finalAnswer = answerInput.toLowerCase();
             if (finalAnswer === correctAnswer) {
-                console.log(`Move cookie monster forward ${monsterMove} step(s)`)
                 moveMonster(monsterMove, "forward");
             }
             else {
-                console.log(`Move cookie monster backward ${monsterMove} step(s)`)
                 moveMonster(monsterMove, "backward");
             }
         });
@@ -157,14 +152,19 @@ document.addEventListener("DOMContentLoaded", () => {
             let monsterLeftNum = parseInt(monsterLeft, 10);
             if (direction === "forward"){
                 const left = monsterLeftNum + monsterMove;
-                if (left>100){document.getElementById("cookie-monster").style.marginLeft = `100%`}
+                if (left>=90){
+                    document.getElementById("cookie-monster").style.marginLeft = `90%`;
+                    // TODO Trigger the celebration!!! Party time.
+                }
                 else {
                     document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
                 }
-        }
+            }
             else if (direction === "backward"){
                 const left = monsterLeftNum - monsterMove;
-                if (left<0){document.getElementById("cookie-monster").style.marginLeft = `0%`}
+                if (left<0){
+                    document.getElementById("cookie-monster").style.marginLeft = `0%`;
+                }
                 else {
                     document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
                 }
