@@ -64,6 +64,39 @@ p.header {
     /* margin-left is defined in html so we can access it in js ... */
 }
 
+.wiggle {
+    animation-name: monsterWiggle;
+    animation-duration: 4s;
+}
+
+.up-and-down {
+    animation-name: monsterUpAndDown;
+    animation-duration: 4s;
+}
+
+/* animation */
+@keyframes monsterWiggle {
+    0% {-webkit-transform: rotate(0deg);}
+    1.5% {-webkit-transform: rotate(-4deg);}
+    2.5% {-webkit-transform: rotate(4deg);}
+    4% {-webkit-transform: rotate(0deg);}
+    5.5% {-webkit-transform: rotate(-4deg);}
+    7% {-webkit-transform: rotate(4deg);}
+    9% {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(0deg);}
+}
+
+@keyframes monsterUpAndDown {
+    0% {-webkit-transform: rotate(0deg);}
+    1.5% {-webkit-transform: rotate(-20deg);}
+    2.5% {-webkit-transform: rotate(4deg);}
+    4% {-webkit-transform: rotate(0deg);}
+    5.5% {-webkit-transform: rotate(-4deg);}
+    7% {-webkit-transform: rotate(4deg);}
+    9% {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(0deg);}
+}
+
 #cookies {
     height: 110px;
     float: right;
@@ -227,6 +260,11 @@ button.answer-right {
     border: 1px solid #456377;
     background-color: rgba(240, 247, 250, 0.932);
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.445);
+}
+
+#monster-win {
+    height: 200px;
+    margin: auto;
 }
 
 
