@@ -18,9 +18,6 @@ const jServiceCategories = {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Start out with the button diabled
-    document.getElementById('submit').disabled = true;
-
     const categories = document.querySelectorAll('.category');
     const jCategoryArrayKeys = Object.keys(jServiceCategories);
     const uniqueCategories = [];
@@ -53,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('submit').disabled = false;
             document.getElementById('submit').style.background = '#bea671';
             document.getElementById('submit').textContent="Submit";
+            document.getElementById('submit').className="submit";
             document.getElementById('answer').focus();
             const thisCell = e.target;
             const cellClassList = thisCell.classList;
@@ -125,50 +123,69 @@ document.addEventListener("DOMContentLoaded", () => {
             latestQuestion = question;
             let questionContainer = document.getElementById('question');
             questionContainer.textContent = question.question;
+            document.getElementById('answer').style.display = "inline";
+
+            const boardHeight = document.getElementById('trivia-board').scrollHeight;
+            document.getElementById('wrap-question').style.height = `${boardHeight-96}px`;
+            document.getElementById('wrap-question').style.display = 'block';
+            document.getElementById('categories').style.display = 'none';
+            document.getElementById('clues').style.display = 'none';
             console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
         }
         
         const form = document.getElementById('form')
         form.addEventListener('submit', e => {
             e.preventDefault();
-            const answerInput = document.getElementById('answer').value;
-            const difficulty = latestQuestion.value;
-        
-            if (difficulty > 400) {
-                monsterMove = 30;
-            } else if (difficulty > 200 && difficulty <= 400) {
-                monsterMove = 20;
-            } else if (difficulty <= 200) {
-                monsterMove = 10;
-            }
-            
-            const checkMatch = stringAnalysis(latestQuestion, answerInput);
 
-            if (checkMatch) {
-                moveMonster(monsterMove, "forward");
+            let submitClass = document.getElementById('submit').className
+
+            if (submitClass === "submit") {
+                const answerInput = document.getElementById('answer').value;
+                const difficulty = latestQuestion.value;
+            
+                if (difficulty > 400) {
+                    monsterMove = 30;
+                } else if (difficulty > 200 && difficulty <= 400) {
+                    monsterMove = 20;
+                } else if (difficulty <= 200) {
+                    monsterMove = 10;
+                }
+                
+                const checkMatch = stringAnalysis(latestQuestion, answerInput);
+
+                if (checkMatch) {
+                    moveMonster(monsterMove, "forward");
+                    postQuestionButton("green");
+                }
+                else {
+                    moveMonster(monsterMove, "backward");
+                    postQuestionButton("red");
+                }
             }
             else {
-                moveMonster(monsterMove, "backward");
+                document.getElementById('wrap-question').style.display = 'none';
+                document.getElementById('categories').style.display = 'contents';
+                document.getElementById('clues').style.display = 'contents';
             }
 
-            // const formattedAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, '');
-            // const correctAnswer = formattedAnswer.toLowerCase();
-            // const finalAnswer = answerInput.toLowerCase();
-
-            // if (finalAnswer === correctAnswer) {
-            //     moveMonster(monsterMove, "forward");
-            // }
-            // else {
-            //     moveMonster(monsterMove, "backward");
-            // }
+            function postQuestionButton(buttonColor) {
+                document.getElementById('answer').style.display = "none";
+                document.getElementById('submit').textContent = "Try another one!";
+                document.getElementById('submit').className = "back-to-board";
+                if (buttonColor==="red") {
+                    document.getElementById('submit').style.background="rgba(255, 0, 0, 0.3)";
+                } 
+                else if (buttonColor === "green") {
+                    document.getElementById('submit').style.background="rgba(8, 141, 8, 0.514)";
+                }
+            }
         });
 
         function moveMonster(monsterMove, direction) {
             let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
             let monsterLeftNum = parseInt(monsterLeft, 10);
             if (direction === "forward"){
-                document.getElementById('submit').textContent="Yes!!";
-                document.getElementById('submit').style.background="rgba(8, 141, 8, 0.514)";
+                document.getElementById('question').textContent = "That much closer to the cookies!";
                 const left = monsterLeftNum + monsterMove;
                 if (left>=90){
                     document.getElementById("cookie-monster").style.marginLeft = `90%`;
@@ -179,8 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
             else if (direction === "backward"){
-                document.getElementById('submit').textContent="Oh no ...";
-                document.getElementById('submit').style.background="rgba(255, 0, 0, 0.3)";
+                document.getElementById('question').textContent = "Wahhh! That was incorrect!";
                 const left = monsterLeftNum - monsterMove;
                 if (left<0){
                     document.getElementById("cookie-monster").style.marginLeft = `0%`;
@@ -189,8 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
                 }
             }
-            // diable the submit button until a new clue is clicked and empty the answer area
-            document.getElementById('submit').disabled = true;
         }
   
   // Welcome Page JS

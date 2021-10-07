@@ -81,7 +81,6 @@ p.header {
     width: 75%;
     margin: auto;
     box-shadow: 0 0 20px black;
-
 }
 
 .cell {
@@ -117,11 +116,10 @@ p.header {
 }
 
 #wrap-question {
+    position: relative;
     text-align: center;
-    margin-top: 4px;
     padding-top: 50px;
     padding-bottom: 40px;
-    /* background-color: #d6bc84; */
     background-color: #3eadf7;
     border-collapse: collapse;
     background: linear-gradient(top, #3eadf7 0%, #266a97 100%);
@@ -129,7 +127,8 @@ p.header {
     border-radius: 5px;
     box-shadow: #000000;
     color:rgba(255, 255, 255, 0.925);
-    /* visibility: hidden; */
+    display: block;
+    margin: auto;
 }
 
 #wrap-cookie-bite {
