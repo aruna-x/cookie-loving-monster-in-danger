@@ -18,6 +18,9 @@ const jServiceCategories = {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Start out with the button diabled
+    document.getElementById('submit').disabled = true;
+
     const categories = document.querySelectorAll('.category');
     const jCategoryArrayKeys = Object.keys(jServiceCategories);
     const uniqueCategories = [];
@@ -43,11 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cells = document.querySelectorAll('.cell');
 
-    // categories.forEach(() => {})
     cells.forEach((cell) => {
         cell.addEventListener("click", (e) => {
-            document.getElementById('answer').focus();
+            // When a clue is clicked, enable the button and automatically move cursor to answer input field
             document.getElementById('answer').value = "";
+            document.getElementById('submit').disabled = false;
+            document.getElementById('submit').style.background = '#bea671';
+            document.getElementById('submit').textContent="Submit";
+            document.getElementById('answer').focus();
             const thisCell = e.target;
             const cellClassList = thisCell.classList;
             questionSwitch(thisCell, cellClassList);
@@ -111,86 +117,194 @@ document.addEventListener("DOMContentLoaded", () => {
                 placeQuestion(question);
             })
             .catch(e => console.error(`There was an error with fetch in apiCall: ${e}`));
-    }
-
-    let latestQuestion;
-
-    function placeQuestion(question) {
-        latestQuestion = question;
-        let questionContainer = document.getElementById('question');
-        questionContainer.textContent = question.question;
-        console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
-    }
-
-    const form = document.getElementById('form')
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        const answerInput = document.getElementById('answer').value;
-        const difficulty = latestQuestion.value;
-
-        if (difficulty > 400) {
-            monsterMove = 30;
-        } else if (difficulty > 200 && difficulty <= 400) {
-            monsterMove = 20;
-        } else if (difficulty <= 200) {
-            monsterMove = 10;
         }
 
-        const formattedAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, '');
-        const correctAnswer = formattedAnswer.toLowerCase();
-        const finalAnswer = answerInput.toLowerCase();
-        if (finalAnswer === correctAnswer) {
-            moveMonster(monsterMove, "forward");
-        }
-        else {
-            moveMonster(monsterMove, "backward");
-        }
-    });
+        let latestQuestion;
 
-    function moveMonster(monsterMove, direction) {
-        let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
-        let monsterLeftNum = parseInt(monsterLeft, 10);
-        if (direction === "forward") {
-            const left = monsterLeftNum + monsterMove;
-            if (left >= 90) {
-                document.getElementById("cookie-monster").style.marginLeft = `90%`;
-                // TODO Trigger the celebration!!! Party time.
+        function placeQuestion(question) {
+            latestQuestion = question;
+            let questionContainer = document.getElementById('question');
+            questionContainer.textContent = question.question;
+            console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
+        }
+        
+        const form = document.getElementById('form')
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const answerInput = document.getElementById('answer').value;
+            const difficulty = latestQuestion.value;
+        
+            if (difficulty > 400) {
+                monsterMove = 30;
+            } else if (difficulty > 200 && difficulty <= 400) {
+                monsterMove = 20;
+            } else if (difficulty <= 200) {
+                monsterMove = 10;
+            }
+            
+            const checkMatch = stringAnalysis(latestQuestion, answerInput);
+
+            if (checkMatch) {
+                moveMonster(monsterMove, "forward");
             }
             else {
-                document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
+                moveMonster(monsterMove, "backward");
             }
-        }
-        else if (direction === "backward") {
-            const left = monsterLeftNum - monsterMove;
-            if (left < 0) {
-                document.getElementById("cookie-monster").style.marginLeft = `0%`;
-            }
-            else {
-                document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
-            }
-        }
-    }
 
-    // Welcome Page JS
-    const playButton = document.getElementById('play-button')
-    const instructionsButton = document.getElementById('instructions-button')
+            // const formattedAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, '');
+            // const correctAnswer = formattedAnswer.toLowerCase();
+            // const finalAnswer = answerInput.toLowerCase();
 
-    playButton.addEventListener('click', toggleView)
-    instructionsButton.addEventListener('click', toggleView)
+            // if (finalAnswer === correctAnswer) {
+            //     moveMonster(monsterMove, "forward");
+            // }
+            // else {
+            //     moveMonster(monsterMove, "backward");
+            // }
+        });
+
+        function moveMonster(monsterMove, direction) {
+            let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
+            let monsterLeftNum = parseInt(monsterLeft, 10);
+            if (direction === "forward"){
+                document.getElementById('submit').textContent="Yes!!";
+                document.getElementById('submit').style.background="rgba(8, 141, 8, 0.514)";
+                const left = monsterLeftNum + monsterMove;
+                if (left>=90){
+                    document.getElementById("cookie-monster").style.marginLeft = `90%`;
+                    // TODO Trigger the celebration!!! Party time.
+                }
+                else {
+                    document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
+                }
+            }
+            else if (direction === "backward"){
+                document.getElementById('submit').textContent="Oh no ...";
+                document.getElementById('submit').style.background="rgba(255, 0, 0, 0.3)";
+                const left = monsterLeftNum - monsterMove;
+                if (left<0){
+                    document.getElementById("cookie-monster").style.marginLeft = `0%`;
+                }
+                else {
+                    document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
+                }
+            }
+            // diable the submit button until a new clue is clicked and empty the answer area
+            document.getElementById('submit').disabled = true;
+        }
+  
+  // Welcome Page JS
+    const playButton = document.getElementById('play-button');
+    const instructionsButton = document.getElementById('instructions-button');
+
+    playButton.addEventListener('click', toggleView);
+    instructionsButton.addEventListener('click', toggleView);
 
     function toggleView() {
-        const welcomePage = document.getElementById('wrap-welcome')
-        const gamePage = document.getElementById('wrap-main')
+        const welcomePage = document.getElementById('wrap-welcome');
+        const gamePage = document.getElementById('wrap-main');
         if (welcomePage.style.display === "block") {
-            welcomePage.style.display = "none"
-            gamePage.style.display = "block"
+            welcomePage.style.display = "none";
+            gamePage.style.display = "block";
         } else if (welcomePage.style.display === "none") {
-            welcomePage.style.display = "block"
-            gamePage.style.display = "none"
+            welcomePage.style.display = "block";
+            gamePage.style.display = "none";
         }
     }
-
 });
 
+/**
+ *  HELPER FUNCTIONS
+ */
+
+// Strings matching analysis
+function stringAnalysis(latestQuestion, answerInput) {
+    // I'm using regex here. Test of puncuation removal:
+    // console.log(`<em>~!@#$%^&*!@#$%^&*()_-+={.,,,....}|:";'<>"'(),:;+.Hello World!</em>`.replace(/<[^>]*>?/gm, '').replace(/[~!@#$%^&*()_+-={}|;"']/g, ''));
+
+    // remove puncuation and awkward markup tags from the ANSWER from the API
+    const noPunctuationAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/[~!@#$%^&*()_+-={}|;"']/g, '');
+    const lowerCaseAnswer = noPunctuationAnswer.toLowerCase();
+
+    // remove puncuation and awkward markup tags from the INPUT from the USER
+    const noPunctuationInput = answerInput.replace(/<[^>]*>?/gm, '').replace(/[~!@#$%^&*()_+-={}|;"']/g, '');
+    const lowerCaseInput = noPunctuationInput.toLowerCase();
+    console.log(lowerCaseInput);
+
+    // Get Levenshtein distance (criteria <= 2 ?)
+    // This accounts for misspellings
+    const levDist = levenshteinDistance(lowerCaseAnswer, lowerCaseInput);
+    console.log(`levDist: ${levDist}`);
+
+    // Get longest matching string (criteria >= 5 ?)
+    // This accounts for missing words
+    const substring = commonSubstring(lowerCaseAnswer, lowerCaseInput);
+    console.log(`common substring length: ${substring}`);
 
 
+    // If Lev dist is < 2 -OR- longest matching string >= 5, assume good answer. Test.
+    return (levDist<3 || substring > 4) ? true : false; 
+}
+
+
+// Calculates Levenshtein Distance (num of insertions, deletions, and subs)
+function levenshteinDistance(lowerCaseAnswer="apple", lowerCaseInput="app") {
+    // This creates a matrix. Every element of the "track" array is itself an array
+    const matrix = Array(lowerCaseInput.length + 1).fill(null).map(() =>
+        Array(lowerCaseAnswer.length + 1).fill(null)
+    );
+    // Fill the first array of the matrix with 0 to lowerCaseAnswer.length numbers
+    for (let i = 0; i <= lowerCaseAnswer.length; i++) {
+        matrix[0][i] = i;
+    }
+    for (let j = 0; j <= lowerCaseInput.length; j++) {
+       matrix[j][0] = j;
+    }
+    for (let j = 1; j <= lowerCaseInput.length; j++) {
+        for (let i = 1; i <= lowerCaseAnswer.length; i++) {
+            const charMatchValue = ( lowerCaseAnswer[i - 1] === lowerCaseInput[j - 1] ) ? 0 : 1;
+            matrix[j][i] = Math.min(
+                matrix[j][i - 1] + 1, // deletion
+                matrix[j - 1][i] + 1, // insertion
+                matrix[j - 1][i - 1] + charMatchValue, // substitution
+            );
+        }
+    }
+    return matrix[lowerCaseInput.length][lowerCaseAnswer.length];
+};
+
+// Example for lowerCaseAnswer = "apple" and lowerCaseInput = "app"
+/**                          MATRIX REPRESENTATIONS                         */
+
+//                                    1-D          
+
+/**
+ *  [ [ 0, 1, 2, 3, 4, 5 ], [ 1, 0, 1, 2, 3, 4 ], [ 2, 1, 0, 1, 2, 3 ], [ 3, 2, 1, 0, 1, 2 ] ]
+ */
+
+//                                    2-D
+/**    
+ * 
+                            [    ""  a  p  p  l  e
+                             "" [ 0, 1, 2, 3, 4, 5 ],
+                             a  [ 1, 0, 1, 2, 3, 4 ],
+                             p  [ 2, 1, 0, 1, 2, 3 ],
+                             p  [ 3, 2, 1, 0, 1, 2 ]
+                            ]
+ * 
+ */
+
+// Calculates the longest matching substring given an array of strings
+function commonSubstring(s1, s2){
+    let shorter = s1.length > s2.length ? s2 : s1;
+    let longer = s1.length < s2.length ? s2 : s1;
+    for (let end=shorter.length; end>0; end--) {
+        // ruler = shorter.length to 1
+        // # of shifts along the string = ruler = shorter.length
+        for (let beg=0; beg <= shorter.length-end; beg++){
+            if (longer.includes(shorter.slice(beg, end+beg))) {
+                return end-beg;
+            }
+        }
+    }
+}
