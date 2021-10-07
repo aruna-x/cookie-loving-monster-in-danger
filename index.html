@@ -20,7 +20,8 @@
                 <p class="header">Answer the questions below to save yourself!</p>
             </h3>
         </div>
-        <div id="progress-bar" class="space-above">
+        <div class="space-above"></div>
+        <div id="progress-bar">
             <img id="cookie-monster" style="margin-left: 0%" src="./images/blue-guy-new-color.png"
                 alt="cute blue monster with one tooth">
             <!-- pic url https://pixabay.com/vectors/monster-blue-cartoon-one-eyed-5892540/ -->
@@ -28,50 +29,53 @@
             <img id="cookies" src="images/chocolate-chip-cookies.svg">
             <!-- https://freesvg.org/cookies-and-glass-of-milk -->
         </div>
-
-        <div id="wrap-board" class="space-above">
-            <table id="trivia-board">
-                <thead id="categories">
-                    <th id="category1" class="category">Category 1</th>
-                    <th id="category2" class="category">Category 2</th>
-                    <th id="category3" class="category">Category 3</th>
-                    <th id="category4" class="category">Category 4</th>
-                    <th id="category5" class="category">Category 5</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="cell category-1-cell">Easy</td>
-                        <td class="cell category-2-cell">Easy</td>
-                        <td class="cell category-3-cell">Easy</td>
-                        <td class="cell category-4-cell">Easy</td>
-                        <td class="cell category-5-cell">Easy</td>
-                    </tr>
-                    <tr>
-                        <td class="cell category-1-cell">Medium</td>
-                        <td class="cell category-2-cell">Medium</td>
-                        <td class="cell category-3-cell">Medium</td>
-                        <td class="cell category-4-cell">Medium</td>
-                        <td class="cell category-5-cell">Medium</td>
-                    </tr>
-                    <tr>
-                        <td class="cell category-1-cell">Hard</td>
-                        <td class="cell category-2-cell">Hard</td>
-                        <td class="cell category-3-cell">Hard</td>
-                        <td class="cell category-4-cell">Hard</td>
-                        <td class="cell category-5-cell">Hard</td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="5"><div id="wrap-question">
+        <div class="space-above"></div>
+        <div id="wrap-board">
+            <table id="trivia-board" >
+                <tr>
+                    <td>
+                        <div id="wrap-question" style="display: none;">
                             <div id="question">GIMME COOKIES!</div>
-                            <img id="hungry-monster" src="" />
                             <form id="form">
                                 <input type="text" id="answer" placeholder="Type your answer here..."/>
-                                <button type="submit" id="submit">Submit</button>
+                                <button type="submit" id="submit" class="submit">Submit</button>
                             </form>
-                        </div></td>
-                    </tr>
-                </tbody>
+                        </div>
+                    </td>
+                </tr>
+
+                <div id="game-board">
+                    <thead id="categories" style="display: contents;">
+                        <th id="category1" class="category">Category 1</th>
+                        <th id="category2" class="category">Category 2</th>
+                        <th id="category3" class="category">Category 3</th>
+                        <th id="category4" class="category">Category 4</th>
+                        <th id="category5" class="category">Category 5</th>
+                    </thead>
+                    <tbody id="clues" style="display: contents;">
+                        <tr>
+                            <td class="cell category-1-cell">Easy</td>
+                            <td class="cell category-2-cell">Easy</td>
+                            <td class="cell category-3-cell">Easy</td>
+                            <td class="cell category-4-cell">Easy</td>
+                            <td class="cell category-5-cell">Easy</td>
+                        </tr>
+                        <tr>
+                            <td class="cell category-1-cell">Medium</td>
+                            <td class="cell category-2-cell">Medium</td>
+                            <td class="cell category-3-cell">Medium</td>
+                            <td class="cell category-4-cell">Medium</td>
+                            <td class="cell category-5-cell">Medium</td>
+                        </tr>
+                        <tr>
+                            <td class="cell category-1-cell">Hard</td>
+                            <td class="cell category-2-cell">Hard</td>
+                            <td class="cell category-3-cell">Hard</td>
+                            <td class="cell category-4-cell">Hard</td>
+                            <td class="cell category-5-cell">Hard</td>
+                        </tr>
+                    </tbody>
+                </div>
             </table>
         </div>
       
