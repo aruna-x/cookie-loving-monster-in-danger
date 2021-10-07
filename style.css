@@ -248,7 +248,7 @@ div.cheat-code {
     background-color: #e6cca3;
     opacity: 0.9;
     text-align: center;
-    width: 65%;
+    width: 75%;
     border-radius: 5px;
     color: rgb(56, 48, 36, 80%);
 }
@@ -298,31 +298,36 @@ body.welcome {
     border-radius: 10%;
     padding: 50px;
     top: 50%;
-    margin-left: 20%;
+    margin-left: 16.5%;
     transform: translateY(-50%); 
     position: absolute;
     display: block;
 }
 
 h1.welcome {
-    text-shadow: 2px 2px 4px #000000;
+    text-shadow: 5px 5px 4px #000000;
+    font-size: 3em;
+}
+
+h1 p {
+    margin: 0;
 }
 
 h3.welcome {
     text-shadow: 2px 2px 4px #000000;
 }
 
-#cookie-quote.welcome {
+/* #cookie-quote.welcome {
     margin: auto;
     /* position: absolute; */
-    box-shadow: 0 0 20px 20px #8f2d56 inset;
+    /* box-shadow: 0 0 20px 20px #8f2d56 inset;
     -webkit-box-shadow: 0 0 20px 20px #8f2d56 inset;
     width: 500px;
-    height: 310px;
+    height: 310px;  */
     /* this is really janky */
     /* top: 21%;
     right: 24%; */
-}
+/* } */
 
 img.welcome {
     margin: auto;
