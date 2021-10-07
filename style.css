@@ -248,6 +248,129 @@ div.cheat-code {
     background-color: #e6cca3;
     opacity: 0.9;
     text-align: center;
-    width: 70%;
+    width: 65%;
     border-radius: 5px;
+    color: rgb(56, 48, 36, 80%);
 }
+
+div#view-instructions{
+    text-align: center;
+}
+
+button#instructions-button {
+    background-color: #73d2de;
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 15px;
+    font-size: 1em;
+    box-shadow: 0 0 20px 5px #218380 inset;
+    -webkit-box-shadow: 0 0 20px 5px #218380 inset;
+}
+
+button#instructions-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px white;
+    cursor: pointer;
+}
+
+/* WELCOME PAGE CSS */
+#wrap-main {
+    z-index: -1;
+    display: none;
+} 
+
+
+body.welcome {
+    background: #8f2d56; 
+    background-image: url(cookie-bullet.svg);  
+}
+
+#wrap-welcome {
+    background: #8f2d56;
+    box-shadow: inset 0 0 20px black;
+    border: 3px solid #218380; 
+    text-align: center;
+    color: #fdb84a;    
+    width: 60%;
+    border-radius: 10%;
+    padding: 50px;
+    top: 50%;
+    margin-left: 20%;
+    transform: translateY(-50%); 
+    position: absolute;
+    display: block;
+}
+
+h1.welcome {
+    text-shadow: 2px 2px 4px #000000;
+}
+
+h3.welcome {
+    text-shadow: 2px 2px 4px #000000;
+}
+
+#cookie-quote.welcome {
+    margin: auto;
+    /* position: absolute; */
+    box-shadow: 0 0 20px 20px #8f2d56 inset;
+    -webkit-box-shadow: 0 0 20px 20px #8f2d56 inset;
+    width: 500px;
+    height: 310px;
+    /* this is really janky */
+    /* top: 21%;
+    right: 24%; */
+}
+
+img.welcome {
+    margin: auto;
+    z-index:-1;
+}
+
+
+h4.welcome {
+    border-bottom: 1px solid white;
+    padding: 5px;
+    color: whitesmoke;
+    margin-bottom: 0;
+    font-size: 1.5em;
+}
+
+li.welcome {
+    list-style-type: none;
+    color: whitesmoke;
+}
+
+#cookie-bullet.welcome {
+    width: 2em;
+    box-shadow: 0 0 0px;
+    margin-right: 4px;
+    margin-bottom: -15px;
+    padding: 5px;
+} 
+
+
+button.welcome {
+    background-color: #73d2de;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 15px;
+    font-size: 1.5em;
+    box-shadow: 0 0 20px 5px #218380 inset;
+    -webkit-box-shadow: 0 0 20px 5px #218380 inset;
+}
+
+button.welcome:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px white;
+    cursor: pointer;
+}
+
+
+
+

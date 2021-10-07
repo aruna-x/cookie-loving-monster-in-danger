@@ -111,65 +111,84 @@ document.addEventListener("DOMContentLoaded", () => {
                 placeQuestion(question);
             })
             .catch(e => console.error(`There was an error with fetch in apiCall: ${e}`));
+    }
+
+    let latestQuestion;
+
+    function placeQuestion(question) {
+        latestQuestion = question;
+        let questionContainer = document.getElementById('question');
+        questionContainer.textContent = question.question;
+        console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
+    }
+
+    const form = document.getElementById('form')
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const answerInput = document.getElementById('answer').value;
+        const difficulty = latestQuestion.value;
+
+        if (difficulty > 400) {
+            monsterMove = 30;
+        } else if (difficulty > 200 && difficulty <= 400) {
+            monsterMove = 20;
+        } else if (difficulty <= 200) {
+            monsterMove = 10;
         }
 
-        let latestQuestion;
-
-        function placeQuestion(question) {
-            latestQuestion = question;
-            let questionContainer = document.getElementById('question');
-            questionContainer.textContent = question.question;
-            console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
+        const formattedAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, '');
+        const correctAnswer = formattedAnswer.toLowerCase();
+        const finalAnswer = answerInput.toLowerCase();
+        if (finalAnswer === correctAnswer) {
+            moveMonster(monsterMove, "forward");
         }
-        
-        const form = document.getElementById('form')
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            const answerInput = document.getElementById('answer').value;
-            const difficulty = latestQuestion.value;
-        
-            if (difficulty > 400) {
-                monsterMove = 30;
-            } else if (difficulty > 200 && difficulty <= 400) {
-                monsterMove = 20;
-            } else if (difficulty <= 200) {
-                monsterMove = 10;
-            }
-            
-            const formattedAnswer = latestQuestion.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, '');
-            const correctAnswer = formattedAnswer.toLowerCase();
-            const finalAnswer = answerInput.toLowerCase();
-            if (finalAnswer === correctAnswer) {
-                moveMonster(monsterMove, "forward");
+        else {
+            moveMonster(monsterMove, "backward");
+        }
+    });
+
+    function moveMonster(monsterMove, direction) {
+        let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
+        let monsterLeftNum = parseInt(monsterLeft, 10);
+        if (direction === "forward") {
+            const left = monsterLeftNum + monsterMove;
+            if (left >= 90) {
+                document.getElementById("cookie-monster").style.marginLeft = `90%`;
+                // TODO Trigger the celebration!!! Party time.
             }
             else {
-                moveMonster(monsterMove, "backward");
-            }
-        });
-        
-        function moveMonster(monsterMove, direction) {
-            let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
-            let monsterLeftNum = parseInt(monsterLeft, 10);
-            if (direction === "forward"){
-                const left = monsterLeftNum + monsterMove;
-                if (left>=90){
-                    document.getElementById("cookie-monster").style.marginLeft = `90%`;
-                    // TODO Trigger the celebration!!! Party time.
-                }
-                else {
-                    document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
-                }
-            }
-            else if (direction === "backward"){
-                const left = monsterLeftNum - monsterMove;
-                if (left<0){
-                    document.getElementById("cookie-monster").style.marginLeft = `0%`;
-                }
-                else {
-                    document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
-                }
+                document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
             }
         }
+        else if (direction === "backward") {
+            const left = monsterLeftNum - monsterMove;
+            if (left < 0) {
+                document.getElementById("cookie-monster").style.marginLeft = `0%`;
+            }
+            else {
+                document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
+            }
+        }
+    }
+
+    // Welcome Page JS
+    const playButton = document.getElementById('play-button')
+    const instructionsButton = document.getElementById('instructions-button')
+
+    playButton.addEventListener('click', toggleView)
+    instructionsButton.addEventListener('click', toggleView)
+
+    function toggleView() {
+        const welcomePage = document.getElementById('wrap-welcome')
+        const gamePage = document.getElementById('wrap-main')
+        if (welcomePage.style.display === "block") {
+            welcomePage.style.display = "none"
+            gamePage.style.display = "block"
+        } else if (welcomePage.style.display === "none") {
+            welcomePage.style.display = "block"
+            gamePage.style.display = "none"
+        }
+    }
 
 });
 
