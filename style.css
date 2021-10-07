@@ -154,33 +154,27 @@ div#question {
 }
 
 button#submit.submit {
-    font-size: 10px;
+    font-size: 15px;
     font-family: Delight Candles;
     border-radius: 10px;
     background-color: #d81159;
-    border: black;
-    color: white;
+    color: rgb(226, 202, 202);
 }
 
 button.answer-wrong {
-    font-size: 10px;
+    font-size: 15px;
     font-family: Delight Candles;
     border-radius: 10px;
-    background-color: #d81159 !important;
-    border: none;
-    color: white;
-    border: 1px solid red;
+    background-color: #d81159;
+    color: rgb(226, 202, 202);
 }
 
 button.answer-right {
-    font-size: 10px;
+    font-size: 15px;
     font-family: Delight Candles;
     border-radius: 10px;
-    background-color: #d81159 !important;
-    border: none;
-    color: white;
-    padding: 60 px;
-    border: 1px solid green;
+    background-color: #d81159;
+    color: rgb(226, 202, 202);
 }
 /* #wrap-cookie-bite {
     display: inline;
