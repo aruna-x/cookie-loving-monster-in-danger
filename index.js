@@ -48,9 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // When a clue is clicked, enable the button and automatically move cursor to answer input field
             document.getElementById('answer').value = "";
             document.getElementById('submit').disabled = false;
-            document.getElementById('submit').style.background = '#bea671';
-            document.getElementById('submit').textContent="Submit";
-            document.getElementById('submit').className="submit";
+            document.getElementById('submit').textContent = "Submit";
+            document.getElementById('submit').className = "submit";
             document.getElementById('answer').focus();
             const thisCell = e.target;
             const cellClassList = thisCell.classList;
@@ -115,99 +114,98 @@ document.addEventListener("DOMContentLoaded", () => {
                 placeQuestion(question);
             })
             .catch(e => console.error(`There was an error with fetch in apiCall: ${e}`));
-        }
+    }
 
-        let latestQuestion;
+    let latestQuestion;
 
-        function placeQuestion(question) {
-            latestQuestion = question;
-            let questionContainer = document.getElementById('question');
-            questionContainer.textContent = question.question;
-            document.getElementById('answer').style.display = "inline";
+    function placeQuestion(question) {
+        latestQuestion = question;
+        let questionContainer = document.getElementById('question');
+        questionContainer.textContent = question.question;
+        document.getElementById('answer').style.display = "inline";
 
-            const boardHeight = document.getElementById('trivia-board').scrollHeight;
-            document.getElementById('wrap-question').style.height = `${boardHeight-96}px`;
-            document.getElementById('wrap-question').style.display = 'block';
-            document.getElementById('categories').style.display = 'none';
-            document.getElementById('clues').style.display = 'none';
-            console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
-        }
-        
-        const form = document.getElementById('form')
-        form.addEventListener('submit', e => {
-            e.preventDefault();
+        const boardHeight = document.getElementById('trivia-board').scrollHeight;
+        document.getElementById('wrap-question').style.height = `${boardHeight - 96}px`;
+        document.getElementById('wrap-question').style.display = 'block';
+        document.getElementById('categories').style.display = 'none';
+        document.getElementById('clues').style.display = 'none';
+        console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
+    }
 
-            let submitClass = document.getElementById('submit').className
+    const form = document.getElementById('form')
+    form.addEventListener('submit', e => {
+        e.preventDefault();
 
-            if (submitClass === "submit") {
-                const answerInput = document.getElementById('answer').value;
-                const difficulty = latestQuestion.value;
-            
-                if (difficulty > 400) {
-                    monsterMove = 30;
-                } else if (difficulty > 200 && difficulty <= 400) {
-                    monsterMove = 20;
-                } else if (difficulty <= 200) {
-                    monsterMove = 10;
-                }
-                
-                const checkMatch = stringAnalysis(latestQuestion, answerInput);
+        let submitClass = document.getElementById('submit').className
 
-                if (checkMatch) {
-                    moveMonster(monsterMove, "forward");
-                    postQuestionButton("green");
-                }
-                else {
-                    moveMonster(monsterMove, "backward");
-                    postQuestionButton("red");
-                }
+        if (submitClass === "submit") {
+            const answerInput = document.getElementById('answer').value;
+            const difficulty = latestQuestion.value;
+
+            if (difficulty > 400) {
+                monsterMove = 30;
+            } else if (difficulty > 200 && difficulty <= 400) {
+                monsterMove = 20;
+            } else if (difficulty <= 200) {
+                monsterMove = 10;
+            }
+
+            const checkMatch = stringAnalysis(latestQuestion, answerInput);
+
+            if (checkMatch) {
+                moveMonster(monsterMove, "forward");
+                postQuestionButton("green");
             }
             else {
-                document.getElementById('wrap-question').style.display = 'none';
-                document.getElementById('categories').style.display = 'contents';
-                document.getElementById('clues').style.display = 'contents';
-            }
-
-            function postQuestionButton(buttonColor) {
-                document.getElementById('answer').style.display = "none";
-                document.getElementById('submit').textContent = "Try another one!";
-                document.getElementById('submit').className = "back-to-board";
-                if (buttonColor==="red") {
-                    document.getElementById('submit').style.background="rgba(255, 0, 0, 0.3)";
-                } 
-                else if (buttonColor === "green") {
-                    document.getElementById('submit').style.background="rgba(8, 141, 8, 0.514)";
-                }
-            }
-        });
-
-        function moveMonster(monsterMove, direction) {
-            let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
-            let monsterLeftNum = parseInt(monsterLeft, 10);
-            if (direction === "forward"){
-                document.getElementById('question').textContent = "That much closer to the cookies!";
-                const left = monsterLeftNum + monsterMove;
-                if (left>=90){
-                    document.getElementById("cookie-monster").style.marginLeft = `90%`;
-                    // TODO Trigger the celebration!!! Party time.
-                }
-                else {
-                    document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
-                }
-            }
-            else if (direction === "backward"){
-                document.getElementById('question').textContent = "Wahhh! That was incorrect!";
-                const left = monsterLeftNum - monsterMove;
-                if (left<0){
-                    document.getElementById("cookie-monster").style.marginLeft = `0%`;
-                }
-                else {
-                    document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
-                }
+                moveMonster(monsterMove, "backward");
+                postQuestionButton("red");
             }
         }
-  
-  // Welcome Page JS
+        else {
+            document.getElementById('wrap-question').style.display = 'none';
+            document.getElementById('categories').style.display = 'contents';
+            document.getElementById('clues').style.display = 'contents';
+        }
+
+        function postQuestionButton(buttonColor) {
+            document.getElementById('answer').style.display = "none";
+            document.getElementById('submit').textContent = "Try another one!";
+            if (buttonColor === "red") {
+                document.getElementById('submit').className = "answer-wrong";
+            }
+            else if (buttonColor === "green") {
+                document.getElementById('submit').className = "answer-right";
+            }
+        }
+    });
+
+    function moveMonster(monsterMove, direction) {
+        let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
+        let monsterLeftNum = parseInt(monsterLeft, 10);
+        if (direction === "forward") {
+            document.getElementById('question').textContent = "That much closer to the cookies!";
+            const left = monsterLeftNum + monsterMove;
+            if (left >= 90) {
+                document.getElementById("cookie-monster").style.marginLeft = `90%`;
+                // TODO Trigger the celebration!!! Party time.
+            }
+            else {
+                document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
+            }
+        }
+        else if (direction === "backward") {
+            document.getElementById('question').textContent = "Wahhh! That was incorrect!";
+            const left = monsterLeftNum - monsterMove;
+            if (left < 0) {
+                document.getElementById("cookie-monster").style.marginLeft = `0%`;
+            }
+            else {
+                document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
+            }
+        }
+    }
+
+    // Welcome Page JS
     const playButton = document.getElementById('play-button');
     const instructionsButton = document.getElementById('instructions-button');
 
@@ -257,12 +255,12 @@ function stringAnalysis(latestQuestion, answerInput) {
 
 
     // If Lev dist is < 2 -OR- longest matching string >= 5, assume good answer. Test.
-    return (levDist<3 || substring > 4) ? true : false; 
+    return (levDist < 3 || substring > 4) ? true : false;
 }
 
 
 // Calculates Levenshtein Distance (num of insertions, deletions, and subs)
-function levenshteinDistance(lowerCaseAnswer="apple", lowerCaseInput="app") {
+function levenshteinDistance(lowerCaseAnswer = "apple", lowerCaseInput = "app") {
     // This creates a matrix. Every element of the "track" array is itself an array
     const matrix = Array(lowerCaseInput.length + 1).fill(null).map(() =>
         Array(lowerCaseAnswer.length + 1).fill(null)
@@ -272,11 +270,11 @@ function levenshteinDistance(lowerCaseAnswer="apple", lowerCaseInput="app") {
         matrix[0][i] = i;
     }
     for (let j = 0; j <= lowerCaseInput.length; j++) {
-       matrix[j][0] = j;
+        matrix[j][0] = j;
     }
     for (let j = 1; j <= lowerCaseInput.length; j++) {
         for (let i = 1; i <= lowerCaseAnswer.length; i++) {
-            const charMatchValue = ( lowerCaseAnswer[i - 1] === lowerCaseInput[j - 1] ) ? 0 : 1;
+            const charMatchValue = (lowerCaseAnswer[i - 1] === lowerCaseInput[j - 1]) ? 0 : 1;
             matrix[j][i] = Math.min(
                 matrix[j][i - 1] + 1, // deletion
                 matrix[j - 1][i] + 1, // insertion
@@ -309,15 +307,15 @@ function levenshteinDistance(lowerCaseAnswer="apple", lowerCaseInput="app") {
  */
 
 // Calculates the longest matching substring given an array of strings
-function commonSubstring(s1, s2){
+function commonSubstring(s1, s2) {
     let shorter = s1.length > s2.length ? s2 : s1;
     let longer = s1.length < s2.length ? s2 : s1;
-    for (let end=shorter.length; end>0; end--) {
+    for (let end = shorter.length; end > 0; end--) {
         // ruler = shorter.length to 1
         // # of shifts along the string = ruler = shorter.length
-        for (let beg=0; beg <= shorter.length-end; beg++){
-            if (longer.includes(shorter.slice(beg, end+beg))) {
-                return end-beg;
+        for (let beg = 0; beg <= shorter.length - end; beg++) {
+            if (longer.includes(shorter.slice(beg, end + beg))) {
+                return end - beg;
             }
         }
     }
