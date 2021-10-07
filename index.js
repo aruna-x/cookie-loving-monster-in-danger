@@ -192,6 +192,25 @@ document.addEventListener("DOMContentLoaded", () => {
             // diable the submit button until a new clue is clicked and empty the answer area
             document.getElementById('submit').disabled = true;
         }
+  
+  // Welcome Page JS
+    const playButton = document.getElementById('play-button');
+    const instructionsButton = document.getElementById('instructions-button');
+
+    playButton.addEventListener('click', toggleView);
+    instructionsButton.addEventListener('click', toggleView);
+
+    function toggleView() {
+        const welcomePage = document.getElementById('wrap-welcome');
+        const gamePage = document.getElementById('wrap-main');
+        if (welcomePage.style.display === "block") {
+            welcomePage.style.display = "none";
+            gamePage.style.display = "block";
+        } else if (welcomePage.style.display === "none") {
+            welcomePage.style.display = "block";
+            gamePage.style.display = "none";
+        }
+    }
 });
 
 /**
