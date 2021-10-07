@@ -1,3 +1,18 @@
+@font-face {
+    font-family: College Star Full LoveSVG;
+    src: url(./fonts/College_Star_Full_LoveSVG.ttf);
+}
+
+@font-face {
+    font-family: Delight Candles;
+    src: url(./fonts/Delight_Candles.ttf);
+}
+
+/* @font-face {
+    font-family: College-Star-Line-LoveSVG;
+    src: url(./fonts/College_Star_Line_LoveSVG.ttf);
+} */
+
 body {
     background: #8f2d56; 
     background-image: url(./images/cookie-bullet.svg);
@@ -22,7 +37,7 @@ p.header {
 }
 
 #title {
-    font-family: Impact;
+    font-family: College Star Full LoveSVG;
     color: #e6cca3;
     font-size: 4em;
     text-shadow: 2px 2px 4px #000000;
@@ -34,6 +49,7 @@ p.header {
     font-size: 1.5em;
     text-shadow: 2px 2px 4px #000000;
     margin: 0;
+    font-family: Delight Candles;
 }
 
 #progress-bar {
@@ -89,7 +105,7 @@ p.header {
     border-radius: 4px;
     padding: 10px 25px;
     text-align: center;
-    font-family: Impact;
+    font-family: College Star Full LoveSVG;
     font-size: 2em;
     color: #fdb84a;
     border-collapse: collapse;
@@ -103,7 +119,7 @@ p.header {
     padding: 15px;
     text-align: center;
     color: #e6cca3;
-    font-family: Impact;
+    font-family: College Star Full LoveSVG;
     font-size: 2em;
     border-collapse: collapse;
     background:linear-gradient(top, #218380 0%, #2f3c58 100%);
@@ -221,13 +237,14 @@ button#instructions-button {
     background-color: #73d2de;
     border: none;
     color: white;
-    padding: 12px 28px;
+    padding: 8px 20px;
     text-align: center;
     border-radius: 20px;
     margin-top: 15px;
-    font-size: 1em;
+    font-size: 12px;
     box-shadow: 0 0 20px 5px #218380 inset;
     -webkit-box-shadow: 0 0 20px 5px #218380 inset;
+    font-family: Delight Candles;
 }
 
 button#instructions-button:hover {
@@ -267,14 +284,14 @@ body.welcome {
 h1.welcome {
     text-shadow: 5px 5px 4px #000000;
     font-size: 3em;
-}
-
-h1 p {
+    font-family: College Star Full LoveSVG;
     margin: 0;
 }
 
 h3.welcome {
     text-shadow: 2px 2px 4px #000000;
+    font-family: Delight Candles;
+    margin: 0;
 }
 
 /* #cookie-quote.welcome {
@@ -289,10 +306,10 @@ h3.welcome {
     right: 24%; */
 /* } */
 
-img.welcome {
+/* img.welcome {
     margin: auto;
     z-index:-1;
-}
+} */
 
 
 h4.welcome {
@@ -301,11 +318,13 @@ h4.welcome {
     color: whitesmoke;
     margin-bottom: 0;
     font-size: 1.5em;
+    font-family: College Star Full LoveSVG;
 }
 
 li.welcome {
     list-style-type: none;
     color: whitesmoke;
+    font-family: Delight Candles;
 }
 
 #cookie-bullet.welcome {
@@ -328,6 +347,7 @@ button.welcome {
     font-size: 1.5em;
     box-shadow: 0 0 20px 5px #218380 inset;
     -webkit-box-shadow: 0 0 20px 5px #218380 inset;
+    font-family: Delight Candles;
 }
 
 button.welcome:hover {
