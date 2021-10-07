@@ -171,8 +171,8 @@ p.header {
     padding-bottom: 40px;
     background-color: #3eadf7;
     border-collapse: collapse;
-    background: linear-gradient(top, #3eadf7 0%, #266a97 100%);
-    background:-webkit-linear-gradient(top, #3eadf7 0%, #266a97 100%);
+    background:linear-gradient(top, #73d2de 0%, #218380 50%);
+    background:-webkit-linear-gradient(top, #73d2de 0%, #218380 50%);
     border-radius: 5px;
     box-shadow: #000000;
     color:rgba(255, 255, 255, 0.925);
@@ -180,7 +180,36 @@ p.header {
     margin: auto;
 }
 
-#wrap-cookie-bite {
+div#question {
+    font-size: 20px;
+    font-family: Delight Candles;
+    padding: 20px;
+}
+
+button#submit.submit {
+    font-size: 15px;
+    font-family: Delight Candles;
+    border-radius: 10px;
+    background-color: #d81159;
+    color: rgb(226, 202, 202);
+}
+
+button.answer-wrong {
+    font-size: 15px;
+    font-family: Delight Candles;
+    border-radius: 10px;
+    background-color: #d81159;
+    color: rgb(226, 202, 202);
+}
+
+button.answer-right {
+    font-size: 15px;
+    font-family: Delight Candles;
+    border-radius: 10px;
+    background-color: #d81159;
+    color: rgb(226, 202, 202);
+}
+/* #wrap-cookie-bite {
     display: inline;
     float: right;
 }
@@ -215,7 +244,7 @@ p.header {
     margin-top: 0px;
     margin-right: -60px;
     margin-left: 30px;
-}
+} */
 
 
 #question {
@@ -239,7 +268,7 @@ p.header {
 }
 
 
-#submit {
+/* #submit {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     padding: 8px;
     background-color:#8ab6d3;
@@ -248,11 +277,11 @@ p.header {
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.445);
     margin-left: 10px;
     border-radius: 2px;
-}
+} */
 
-#submit:hover {
+/* #submit:hover {
     background-color:#92c5e7;
-}
+} */
 
 div.cheat-code {
     margin-right: auto;
@@ -331,24 +360,6 @@ h3.welcome {
     margin: 0;
 }
 
-/* #cookie-quote.welcome {
-    margin: auto;
-    /* position: absolute; */
-    /* box-shadow: 0 0 20px 20px #8f2d56 inset;
-    -webkit-box-shadow: 0 0 20px 20px #8f2d56 inset;
-    width: 500px;
-    height: 310px;  */
-    /* this is really janky */
-    /* top: 21%;
-    right: 24%; */
-/* } */
-
-/* img.welcome {
-    margin: auto;
-    z-index:-1;
-} */
-
-
 h4.welcome {
     border-bottom: 1px solid white;
     padding: 5px;
@@ -387,7 +398,7 @@ button.welcome {
     font-family: Delight Candles;
 }
 
-button.welcome:hover {
+button:hover {
     transform: translateY(-3px);
     box-shadow: 0 0 20px white;
     cursor: pointer;

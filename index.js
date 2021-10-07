@@ -48,9 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // When a clue is clicked, enable the button and automatically move cursor to answer input field
             document.getElementById('answer').value = "";
             document.getElementById('submit').disabled = false;
-            document.getElementById('submit').style.background = '#bea671';
-            document.getElementById('submit').textContent="Submit";
-            document.getElementById('submit').className="submit";
+            document.getElementById('submit').textContent = "Submit";
+            document.getElementById('submit').className = "submit";
             document.getElementById('answer').focus();
             const thisCell = e.target;
             const cellClassList = thisCell.classList;
@@ -118,15 +117,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 placeQuestion(question);
             })
             .catch(e => console.error(`There was an error with fetch in apiCall: ${e}`));
-        }
+    }
 
-        let latestQuestion;
+    let latestQuestion;
 
-        function placeQuestion(question) {
-            latestQuestion = question;
-            let questionContainer = document.getElementById('question');
-            questionContainer.textContent = question.question;
-            document.getElementById('answer').style.display = "inline";
+    function placeQuestion(question) {
+        latestQuestion = question;
+        let questionContainer = document.getElementById('question');
+        questionContainer.textContent = question.question;
+        document.getElementById('answer').style.display = "inline";
 
             const boardHeight = document.getElementById('trivia-board').scrollHeight;
             document.getElementById('wrap-question').style.height = `${boardHeight-96}px`;
@@ -164,12 +163,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     moveMonster(monsterMove, "backward");
                     postQuestionButton("wrong");
                 }
-            }
-            else {
-                document.getElementById('wrap-question').style.display = 'none';
-                document.getElementById('categories').style.display = 'contents';
-                document.getElementById('clues').style.display = 'contents';
-            }
+        }
+        else {
+            document.getElementById('wrap-question').style.display = 'none';
+            document.getElementById('categories').style.display = 'contents';
+            document.getElementById('clues').style.display = 'contents';
+        }
 
             function postQuestionButton(buttonColor) {
                 document.getElementById('answer').style.display = "none";
@@ -180,8 +179,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 else if (buttonColor === "right") {
                     document.getElementById('submit').className = "answer-right";
                 }
-            }
-        });
+        }
+    });
 
         function moveMonster(monsterMove, direction) {
             let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
@@ -214,10 +213,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById("cookie-monster").classList.add('up-and-down');
                     setTimeout(()=>{document.getElementById("cookie-monster").classList.remove('up-and-down');}, 3000);
                 }
-            }
         }
-  
-  // Welcome Page JS
+    }
+
+    // Welcome Page JS
     const playButton = document.getElementById('play-button');
     const instructionsButton = document.getElementById('instructions-button');
 
@@ -267,12 +266,12 @@ function stringAnalysis(latestQuestion, answerInput) {
 
 
     // If Lev dist is < 2 -OR- longest matching string >= 5, assume good answer. Test.
-    return (levDist<3 || substring > 4) ? true : false; 
+    return (levDist < 3 || substring > 4) ? true : false;
 }
 
 
 // Calculates Levenshtein Distance (num of insertions, deletions, and subs)
-function levenshteinDistance(lowerCaseAnswer="apple", lowerCaseInput="app") {
+function levenshteinDistance(lowerCaseAnswer = "apple", lowerCaseInput = "app") {
     // This creates a matrix. Every element of the "track" array is itself an array
     const matrix = Array(lowerCaseInput.length + 1).fill(null).map(() =>
         Array(lowerCaseAnswer.length + 1).fill(null)
@@ -282,11 +281,11 @@ function levenshteinDistance(lowerCaseAnswer="apple", lowerCaseInput="app") {
         matrix[0][i] = i;
     }
     for (let j = 0; j <= lowerCaseInput.length; j++) {
-       matrix[j][0] = j;
+        matrix[j][0] = j;
     }
     for (let j = 1; j <= lowerCaseInput.length; j++) {
         for (let i = 1; i <= lowerCaseAnswer.length; i++) {
-            const charMatchValue = ( lowerCaseAnswer[i - 1] === lowerCaseInput[j - 1] ) ? 0 : 1;
+            const charMatchValue = (lowerCaseAnswer[i - 1] === lowerCaseInput[j - 1]) ? 0 : 1;
             matrix[j][i] = Math.min(
                 matrix[j][i - 1] + 1, // deletion
                 matrix[j - 1][i] + 1, // insertion
@@ -319,15 +318,15 @@ function levenshteinDistance(lowerCaseAnswer="apple", lowerCaseInput="app") {
  */
 
 // Calculates the longest matching substring given an array of strings
-function commonSubstring(s1, s2){
+function commonSubstring(s1, s2) {
     let shorter = s1.length > s2.length ? s2 : s1;
     let longer = s1.length < s2.length ? s2 : s1;
-    for (let end=shorter.length; end>0; end--) {
+    for (let end = shorter.length; end > 0; end--) {
         // ruler = shorter.length to 1
         // # of shifts along the string = ruler = shorter.length
-        for (let beg=0; beg <= shorter.length-end; beg++){
-            if (longer.includes(shorter.slice(beg, end+beg))) {
-                return end-beg;
+        for (let beg = 0; beg <= shorter.length - end; beg++) {
+            if (longer.includes(shorter.slice(beg, end + beg))) {
+                return end - beg;
             }
         }
     }
