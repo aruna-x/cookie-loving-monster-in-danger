@@ -219,17 +219,17 @@ function stringAnalysis(latestQuestion, answerInput) {
 
     // Get longest matching string (criteria >= 5 ?)
     // This accounts for missing words
-    const substring = commonSubstring([lowerCaseAnswer, lowerCaseInput]);
-    console.log(`substring: ${substring}`);
+    const substring = commonSubstring(lowerCaseAnswer, lowerCaseInput);
+    console.log(`common substring length: ${substring}`);
 
 
     // If Lev dist is < 2 -OR- longest matching string >= 5, assume good answer. Test.
-
+    return (levDist<3 || substring > 4) ? true : false; 
 }
 
 
 // Calculates Levenshtein Distance (num of insertions, deletions, and subs)
-const levenshteinDistance = (lowerCaseAnswer="apple", lowerCaseInput="app") => {
+function levenshteinDistance(lowerCaseAnswer="apple", lowerCaseInput="app") {
     // This creates a matrix. Every element of the "track" array is itself an array
     const matrix = Array(lowerCaseInput.length + 1).fill(null).map(() =>
         Array(lowerCaseAnswer.length + 1).fill(null)
@@ -251,8 +251,7 @@ const levenshteinDistance = (lowerCaseAnswer="apple", lowerCaseInput="app") => {
             );
         }
     }
-    console.log(matrix);
-   return matrix[lowerCaseInput.length][lowerCaseAnswer.length];
+    return matrix[lowerCaseInput.length][lowerCaseAnswer.length];
 };
 
 // Example for lowerCaseAnswer = "apple" and lowerCaseInput = "app"
@@ -277,17 +276,16 @@ const levenshteinDistance = (lowerCaseAnswer="apple", lowerCaseInput="app") => {
  */
 
 // Calculates the longest matching substring given an array of strings
-function commonSubstring(words){
-    var iChar, iWord,
-        refWord = words[0],
-        lRefWord = refWord.length,
-        lWords = words.length;
-    for (iChar = 0; iChar < lRefWord; iChar += 1) {
-        for (iWord = 1; iWord < lWords; iWord += 1) {
-            if (refWord[iChar] !== words[iWord][iChar]) {
-                return refWord.substring(0, iChar);
+function commonSubstring(s1, s2){
+    let shorter = s1.length > s2.length ? s2 : s1;
+    let longer = s1.length < s2.length ? s2 : s1;
+    for (let end=shorter.length; end>0; end--) {
+        // ruler = shorter.length to 1
+        // # of shifts along the string = ruler = shorter.length
+        for (let beg=0; beg <= shorter.length-end; beg++){
+            if (longer.includes(shorter.slice(beg, end+beg))) {
+                return end-beg;
             }
         }
     }
-    return refWord;
 }
