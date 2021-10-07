@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gimme Cookies!</title>
     <script src="./index.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div id="wrap-main">
 
+        <div class="header">
+            <h1 id="title" class="header">Blue Cookie-Loving Monster in Danger!</h1>
+            <h3 id="subtitle" class="header">
+                <p class="header">Blue monsters love cookies, but their second favorite food is people!</p>
+                <p class="header">Answer the questions below to save yourself!</p>
+            </h3>
+        </div>
         <div id="progress-bar" class="space-above">
-            <img id="cookie-monster" style="margin-left: 0%" src="/images/blue-guy.png" alt="cute blue monster with one tooth">
+            <img id="cookie-monster" style="margin-left: 0%" src="./images/blue-guy.png"
+                alt="cute blue monster with one tooth">
             <!-- pic url https://pixabay.com/vectors/monster-blue-cartoon-one-eyed-5892540/ -->
             <div id="ground"></div>
             <img id="cookies" src="images/chocolate-chip-cookies.svg">
@@ -29,26 +39,26 @@
                     <th id="category5" class="category">Category 5</th>
                 </thead>
                 <tbody>
-                    <tr> 
+                    <tr>
                         <td class="cell category-1-cell">Easy</td>
                         <td class="cell category-2-cell">Easy</td>
                         <td class="cell category-3-cell">Easy</td>
                         <td class="cell category-4-cell">Easy</td>
-                        <td class="cell category-5-cell">Easy</td> 
+                        <td class="cell category-5-cell">Easy</td>
                     </tr>
-                    <tr> 
+                    <tr>
                         <td class="cell category-1-cell">Medium</td>
                         <td class="cell category-2-cell">Medium</td>
                         <td class="cell category-3-cell">Medium</td>
                         <td class="cell category-4-cell">Medium</td>
-                        <td class="cell category-5-cell">Medium</td> 
+                        <td class="cell category-5-cell">Medium</td>
                     </tr>
-                    <tr> 
+                    <tr>
                         <td class="cell category-1-cell">Hard</td>
                         <td class="cell category-2-cell">Hard</td>
                         <td class="cell category-3-cell">Hard</td>
                         <td class="cell category-4-cell">Hard</td>
-                        <td class="cell category-5-cell">Hard</td> 
+                        <td class="cell category-5-cell">Hard</td>
                     </tr>
 
                     <!-- <tr>
@@ -73,11 +83,19 @@
             <div id="question">GIMME COOKIES!</div>
             <img id="hungry-monster" src="" />
             <form id="form">
-                <input type="text" id="answer" placeholder="Type your answer here..."/>
+                <input type="text" id="answer" placeholder="Type your answer here..." />
                 <button type="submit" id="submit">Submit</button>
             </form>
         </div>
 
     </div>
+
+    <div class="cheat-code">
+        <p class="cheat-code">Hint: Use cheat code "Command + Option + J" (for Mac) or "Control + Shift + J" (for
+            Windows, Linux, and Chrome
+            OS) if you get stuck!</p>
+    </div>
+
 </body>
+
 </html>
