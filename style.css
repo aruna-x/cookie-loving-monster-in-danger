@@ -64,36 +64,48 @@ p.header {
     /* margin-left is defined in html so we can access it in js ... */
 }
 
-.wiggle {
-    animation-name: monsterWiggle;
+.forward-wiggle {
+    animation-name: forwardWiggle;
     animation-duration: 4s;
 }
 
-.up-and-down {
-    animation-name: monsterUpAndDown;
+.backward-wiggle {
+    animation-name: backwardWiggle;
     animation-duration: 4s;
 }
 
 /* animation */
-@keyframes monsterWiggle {
+@keyframes backwardWiggle {
     0% {-webkit-transform: rotate(0deg);}
-    1.5% {-webkit-transform: rotate(-4deg);}
-    2.5% {-webkit-transform: rotate(4deg);}
-    4% {-webkit-transform: rotate(0deg);}
-    5.5% {-webkit-transform: rotate(-4deg);}
-    7% {-webkit-transform: rotate(4deg);}
-    9% {-webkit-transform: rotate(0deg);}
+    1.5% {-webkit-transform: rotate(-5deg);}
+    2.5% {-webkit-transform: rotate(-10deg);}
+    4% {-webkit-transform: rotate(-15deg);}
+    5.5% {-webkit-transform: rotate(-20deg);}
+    7% {-webkit-transform: rotate(-20deg);}
+    9% {-webkit-transform: rotate(-20deg);}
+    10.5% {-webkit-transform: rotate(-4deg);}
+    11.5% {-webkit-transform: rotate(4deg);}
+    13% {-webkit-transform: rotate(0deg);}
+    14.5% {-webkit-transform: rotate(-4deg);}
+    16% {-webkit-transform: rotate(4deg);}
+    18% {-webkit-transform: rotate(0deg);}
     100% {-webkit-transform: rotate(0deg);}
 }
 
-@keyframes monsterUpAndDown {
+@keyframes forwardWiggle {
     0% {-webkit-transform: rotate(0deg);}
-    1.5% {-webkit-transform: rotate(-20deg);}
-    2.5% {-webkit-transform: rotate(4deg);}
-    4% {-webkit-transform: rotate(0deg);}
-    5.5% {-webkit-transform: rotate(-4deg);}
-    7% {-webkit-transform: rotate(4deg);}
-    9% {-webkit-transform: rotate(0deg);}
+    1.5% {-webkit-transform: rotate(5deg);}
+    2.5% {-webkit-transform: rotate(10deg);}
+    4% {-webkit-transform: rotate(15deg);}
+    5.5% {-webkit-transform: rotate(20deg);}
+    7% {-webkit-transform: rotate(20deg);}
+    9% {-webkit-transform: rotate(20deg);}
+    10.5% {-webkit-transform: rotate(-4deg);}
+    11.5% {-webkit-transform: rotate(4deg);}
+    13% {-webkit-transform: rotate(0deg);}
+    14.5% {-webkit-transform: rotate(-4deg);}
+    16% {-webkit-transform: rotate(4deg);}
+    18% {-webkit-transform: rotate(0deg);}
     100% {-webkit-transform: rotate(0deg);}
 }
 

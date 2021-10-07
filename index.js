@@ -81,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 grabQuestion(thisCell, category);
                 break;
             default:
-                console.log("Something went wrong with questionSwitch!");
                 break;
         }
     }
@@ -198,8 +197,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 else {
                     document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
-                    document.getElementById("cookie-monster").classList.add('wiggle');
-                    setTimeout(()=>{document.getElementById("cookie-monster").classList.remove('wiggle');}, 3000);
+                    document.getElementById("cookie-monster").classList.add('forward-wiggle');
+                    setTimeout(()=>{document.getElementById("cookie-monster").classList.remove('forward-wiggle');}, 3000);
                 }
             }
             else if (direction === "backward"){
@@ -207,11 +206,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 const left = monsterLeftNum - monsterMove;
                 if (left<0){
                     document.getElementById("cookie-monster").style.marginLeft = `0%`;
+                    document.getElementById("cookie-monster").classList.add('backward-wiggle');
+                    setTimeout(()=>{document.getElementById("cookie-monster").classList.remove('backward-wiggle');}, 3000);
                 }
                 else {
                     document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
-                    document.getElementById("cookie-monster").classList.add('up-and-down');
-                    setTimeout(()=>{document.getElementById("cookie-monster").classList.remove('up-and-down');}, 3000);
+                    document.getElementById("cookie-monster").classList.add('backward-wiggle');
+                    setTimeout(()=>{document.getElementById("cookie-monster").classList.remove('backward-wiggle');}, 3000);
                 }
         }
     }
@@ -252,18 +253,14 @@ function stringAnalysis(latestQuestion, answerInput) {
     // remove puncuation and awkward markup tags from the INPUT from the USER
     const noPunctuationInput = answerInput.replace(/<[^>]*>?/gm, '').replace(/[~!@#$%^&*()_+-={}|;"']/g, '');
     const lowerCaseInput = noPunctuationInput.toLowerCase();
-    console.log(lowerCaseInput);
 
     // Get Levenshtein distance (criteria <= 2 ?)
     // This accounts for misspellings
     const levDist = levenshteinDistance(lowerCaseAnswer, lowerCaseInput);
-    console.log(`levDist: ${levDist}`);
 
     // Get longest matching string (criteria >= 5 ?)
     // This accounts for missing words
     const substring = commonSubstring(lowerCaseAnswer, lowerCaseInput);
-    console.log(`common substring length: ${substring}`);
-
 
     // If Lev dist is < 2 -OR- longest matching string >= 5, assume good answer. Test.
     return (levDist < 3 || substring > 4) ? true : false;
@@ -321,6 +318,7 @@ function levenshteinDistance(lowerCaseAnswer = "apple", lowerCaseInput = "app") 
 function commonSubstring(s1, s2) {
     let shorter = s1.length > s2.length ? s2 : s1;
     let longer = s1.length < s2.length ? s2 : s1;
+    if (shorter === "" || longer === "") { return 0 }
     for (let end = shorter.length; end > 0; end--) {
         // ruler = shorter.length to 1
         // # of shifts along the string = ruler = shorter.length
