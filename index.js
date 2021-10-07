@@ -212,7 +212,7 @@ function stringAnalysis(latestQuestion, answerInput) {
     const lowerCaseInput = noPunctuationInput.toLowerCase();
     console.log(lowerCaseInput);
 
-    // Get Levenshtein distance (criteria < 2 ?)
+    // Get Levenshtein distance (criteria <= 2 ?)
     // This accounts for misspellings
     const levDist = levenshteinDistance(lowerCaseAnswer, lowerCaseInput);
     console.log(`levDist: ${levDist}`);
@@ -227,28 +227,54 @@ function stringAnalysis(latestQuestion, answerInput) {
 
 }
 
+
 // Calculates Levenshtein Distance (num of insertions, deletions, and subs)
-const levenshteinDistance = (str1 = '', str2 = '') => {
-   const track = Array(str2.length + 1).fill(null).map(() =>
-   Array(str1.length + 1).fill(null));
-   for (let i = 0; i <= str1.length; i += 1) {
-      track[0][i] = i;
-   }
-   for (let j = 0; j <= str2.length; j += 1) {
-      track[j][0] = j;
-   }
-   for (let j = 1; j <= str2.length; j += 1) {
-      for (let i = 1; i <= str1.length; i += 1) {
-         const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
-         track[j][i] = Math.min(
-            track[j][i - 1] + 1, // deletion
-            track[j - 1][i] + 1, // insertion
-            track[j - 1][i - 1] + indicator, // substitution
-         );
-      }
-   }
-   return track[str2.length][str1.length];
+const levenshteinDistance = (lowerCaseAnswer="apple", lowerCaseInput="app") => {
+    // This creates a matrix. Every element of the "track" array is itself an array
+    const matrix = Array(lowerCaseInput.length + 1).fill(null).map(() =>
+        Array(lowerCaseAnswer.length + 1).fill(null)
+    );
+    // Fill the first array of the matrix with 0 to lowerCaseAnswer.length numbers
+    for (let i = 0; i <= lowerCaseAnswer.length; i++) {
+        matrix[0][i] = i;
+    }
+    for (let j = 0; j <= lowerCaseInput.length; j++) {
+       matrix[j][0] = j;
+    }
+    for (let j = 1; j <= lowerCaseInput.length; j++) {
+        for (let i = 1; i <= lowerCaseAnswer.length; i++) {
+            const charMatchValue = ( lowerCaseAnswer[i - 1] === lowerCaseInput[j - 1] ) ? 0 : 1;
+            matrix[j][i] = Math.min(
+                matrix[j][i - 1] + 1, // deletion
+                matrix[j - 1][i] + 1, // insertion
+                matrix[j - 1][i - 1] + charMatchValue, // substitution
+            );
+        }
+    }
+    console.log(matrix);
+   return matrix[lowerCaseInput.length][lowerCaseAnswer.length];
 };
+
+// Example for lowerCaseAnswer = "apple" and lowerCaseInput = "app"
+/**                          MATRIX REPRESENTATIONS                         */
+
+//                                    1-D          
+
+/**
+ *  [ [ 0, 1, 2, 3, 4, 5 ], [ 1, 0, 1, 2, 3, 4 ], [ 2, 1, 0, 1, 2, 3 ], [ 3, 2, 1, 0, 1, 2 ] ]
+ */
+
+//                                    2-D
+/**    
+ * 
+                            [    ""  a  p  p  l  e
+                             "" [ 0, 1, 2, 3, 4, 5 ],
+                             a  [ 1, 0, 1, 2, 3, 4 ],
+                             p  [ 2, 1, 0, 1, 2, 3 ],
+                             p  [ 3, 2, 1, 0, 1, 2 ]
+                            ]
+ * 
+ */
 
 // Calculates the longest matching substring given an array of strings
 function commonSubstring(words){
