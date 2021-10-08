@@ -8,11 +8,6 @@
     src: url(./fonts/Delight_Candles.ttf);
 }
 
-/* @font-face {
-    font-family: College-Star-Line-LoveSVG;
-    src: url(./fonts/College_Star_Line_LoveSVG.ttf);
-} */
-
 body {
     background: #8f2d56; 
     background-image: url(./images/cookie-bullet.svg);
@@ -24,7 +19,7 @@ div.header {
     text-align: center;
     background:linear-gradient(top, #218380 0%, #2f3c58 100%);
     background:-webkit-linear-gradient(top, #218380 0%, #2f3c58 100%);
-    border: 2px solid #d81159;  
+    border: 2px solid #222;  
     border-radius: 50px;
     padding: 20px;
     margin-top: 50px;
@@ -74,12 +69,10 @@ p.header {
     animation-name: forwardWiggle;
     animation-duration: 4s;
 }
-
 .backward-wiggle {
     animation-name: backwardWiggle;
     animation-duration: 4s;
 }
-
 /* animation */
 @keyframes winWiggle {
     0% {-webkit-transform: rotate(0deg);}
@@ -97,7 +90,6 @@ p.header {
     84% {-webkit-transform: rotate(0deg);}
     100% {-webkit-transform: rotate(0deg);}
 }
-
 @keyframes forwardWiggle {
     0% {-webkit-transform: rotate(0deg);}
     1.5% {-webkit-transform: rotate(5deg);}
@@ -106,6 +98,22 @@ p.header {
     5.5% {-webkit-transform: rotate(20deg);}
     7% {-webkit-transform: rotate(20deg);}
     9% {-webkit-transform: rotate(20deg);}
+    10.5% {-webkit-transform: rotate(-4deg);}
+    11.5% {-webkit-transform: rotate(4deg);}
+    13% {-webkit-transform: rotate(0deg);}
+    14.5% {-webkit-transform: rotate(-4deg);}
+    16% {-webkit-transform: rotate(4deg);}
+    18% {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(0deg);}
+}
+@keyframes backwardWiggle {
+    0% {-webkit-transform: rotate(0deg);}
+    1.5% {-webkit-transform: rotate(-5deg);}
+    2.5% {-webkit-transform: rotate(-10deg);}
+    4% {-webkit-transform: rotate(-15deg);}
+    5.5% {-webkit-transform: rotate(-20deg);}
+    7% {-webkit-transform: rotate(-20deg);}
+    9% {-webkit-transform: rotate(-20deg);}
     10.5% {-webkit-transform: rotate(-4deg);}
     11.5% {-webkit-transform: rotate(4deg);}
     13% {-webkit-transform: rotate(0deg);}
@@ -136,7 +144,6 @@ p.header {
     height: 110px;
     float: right;
     margin-top: -80px;
-    /* shadow on cookies? */
 }
 
 #ground {
@@ -148,7 +155,6 @@ p.header {
     margin-left: auto;
     border-radius: 10px;
     box-shadow: 0 0 20px black;
-    /* border: 2px solid #8f2d56; */
     background:linear-gradient(top, #73d2de 0%, #218380 50%);
     background:-webkit-linear-gradient(top, #73d2de 0%, #218380 50%);
 }
@@ -158,10 +164,9 @@ p.header {
 }
 
 #trivia-board {
-    /* border: 2px solid #218380;  */
     border-radius: 10px;
     text-align: center;
-    background-color: #d81159;
+    background-color: #222;
     width: 75%;
     margin: auto;
     box-shadow: 0 0 20px black;
@@ -229,57 +234,13 @@ button#submit.submit {
     color: rgb(226, 202, 202);
 }
 
-button.answer-wrong {
+button.try-again {
     font-size: 15px;
     font-family: Delight Candles;
     border-radius: 10px;
     background-color: #d81159;
     color: rgb(226, 202, 202);
 }
-
-button.answer-right {
-    font-size: 15px;
-    font-family: Delight Candles;
-    border-radius: 10px;
-    background-color: #d81159;
-    color: rgb(226, 202, 202);
-}
-/* #wrap-cookie-bite {
-    display: inline;
-    float: right;
-}
-
-#circle1 {
-  width: 50px;
-  height: 50px;
-  background: #b2daf5;
-  border-radius: 50%;
-  position: relative;
-  margin-top: -57px;
-  margin-right: -5px;
-}
-
-#circle2 {
-    width: 30px;
-    height: 20px;
-    background: #b2daf5;
-    border-radius: 50%;
-    position: relative;
-    margin-top: -47px;
-    margin-right: 0px;
-    margin-left: -5px;
-}
-
-#circle3 {
-    width: 25px;
-    height: 30px;
-    background: #b2daf5;
-    border-radius: 50%;
-    position: relative;
-    margin-top: 0px;
-    margin-right: -60px;
-    margin-left: 30px;
-} */
 
 
 #question {
@@ -302,21 +263,6 @@ button.answer-right {
     margin: auto;
 }
 
-
-/* #submit {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    padding: 8px;
-    background-color:#8ab6d3;
-    border: none;
-    color: #344b5a;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.445);
-    margin-left: 10px;
-    border-radius: 2px;
-} */
-
-/* #submit:hover {
-    background-color:#92c5e7;
-} */
 
 div.cheat-code {
     margin-right: auto;
@@ -437,6 +383,18 @@ button:hover {
     transform: translateY(-3px);
     box-shadow: 0 0 20px white;
     cursor: pointer;
+}
+
+
+img#monster-win {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    box-shadow: 0 0 20px 10px white;
+    display: block;
+    height: 60%;
+    width: height;
 }
 
 
