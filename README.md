@@ -2,7 +2,7 @@
 
 #### By _**Aruna Evan and Lisa Primeaux-Redmond**_
 
-#### _A demonstration site showcasing HTML, CSS, and JavaScript, our "Cookie-Loving Monster in Danger!" is an interactive trivia game. Users select a category and difficulty level to view a question and then input their answers below. Correct answers advance the blue monster toward a plate of cookies, and the game is won when he reaches his goal._
+#### _"Cookie-Loving Monster in Danger!" is an interactive trivia game. Users select a category and difficulty level to view a question and then input their answers below. Correct answers advance the blue monster toward a plate of cookies, and the game is won when he reaches his goal._
 
 ## Technologies Used
 

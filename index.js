@@ -48,27 +48,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Check categories for uniqueness
     function checkUnique(category, jCategoryArrayKeys) {
-            // When we have found all five successfully, exit function
-            if (uniqueCategories.length === 5) { return; }
+        // When we have found all five successfully, exit function
+        if (uniqueCategories.length === 5) { return; }
 
-            const randomKey = jCategoryArrayKeys[Math.floor(Math.random() * jCategoryArrayKeys.length)]
-            const redundantKey = Boolean(uniqueCategories.find((el) => el === randomKey));
-            if (redundantKey) {
-                checkUnique(category, jCategoryArrayKeys);
-                return;
-            }
-            else if (!redundantKey) {
-                uniqueCategories.push(randomKey);
-                category.textContent = randomKey;
-                return;
-            }
+        const randomKey = jCategoryArrayKeys[Math.floor(Math.random() * jCategoryArrayKeys.length)]
+        const redundantKey = Boolean(uniqueCategories.find((el) => el === randomKey));
+        if (redundantKey) {
+            checkUnique(category, jCategoryArrayKeys);
+            return;
+        }
+        else if (!redundantKey) {
+            uniqueCategories.push(randomKey);
+            category.textContent = randomKey;
+            return;
+        }
     }
 
     // When any clue button is clicked ...
     const cells = document.querySelectorAll('.cell');
+    let uniqueQuestions = [];
     cells.forEach((cell) => {
         cell.addEventListener("click", (e) => {
-
             // Display question, enable submit button, refresh answer field in form
             let answer = document.getElementById('answer');
             let submitButton = document.getElementById('submit');
@@ -83,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Initiates a code chain that begins with below code determines the category the clicked clue is under
             const thisCell = e.target;
             const cellClassList = thisCell.classList;
+
             questionSwitch(thisCell, cellClassList);
         });
     })
@@ -124,19 +125,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const difficulty = thisCell.textContent;
         switch (difficulty) {
             case ("Easy"):
-                apiCall(category, "200");
+                apiCall(thisCell, category, "200");
                 break;
             case ("Medium"):
-                apiCall(category, "400");
+                apiCall(thisCell, category, "400");
                 break;
             case ("Hard"):
-                apiCall(category, "600");
+                apiCall(thisCell, category, "600");
                 break;
         }
     }
 
     // Takes a category and difficulty, and calls placeQuestion to place it on the page
-    function apiCall(category, difficultyValue) {
+    function apiCall(thisCell, category, difficultyValue) {
         const category_id = jServiceCategories[category];
         fetch(`https://jservice.io/api/category?id=${category_id}`)
             .then(r => r.json())
@@ -144,34 +145,59 @@ document.addEventListener("DOMContentLoaded", () => {
                 let clueList = categoryObj.clues.filter(clue => {
                     const difficultyBool = ((clue.value <= difficultyValue) && (clue.value > difficultyValue - 200));
                     const vettedQuestion = !(clue.question.toLowerCase().includes("as seen in"));
-                    return (difficultyBool && vettedQuestion);
+                    const brokenQ = !(clue.question === "=");
+                    return (difficultyBool && vettedQuestion && brokenQ);
                 });
-
-                const question = clueList[Math.floor(Math.random() * clueList.length)];
-                placeQuestion(question, difficultyValue);
-            })
-            .catch(e => console.error(`There was an error with fetch in apiCall: ${e}`));
+                
+                placeQuestion(thisCell, clueList, difficultyValue);
+        })
+        .catch(e => console.error(`There was an error with fetch in apiCall: ${e}`));
     }
 
     // Now we'll display the question and its wrapper instead of the game board
     let latestQuestion;
     let difficultyValue;
-    function placeQuestion(question, dValue) {
-        latestQuestion = question;
-        difficultyValue = dValue;
+    let checkCount = 0;
+    let redundantQuestion;
+    function placeQuestion(thisCell, clueList, dValue) {
+        // grab a question from our filtered list at random
+        let question = clueList[Math.floor(Math.random() * clueList.length)];
+        if (redundantQuestion === question.question) {
+            thisCell.disabled = true;
+            thisCell.style.boxShadow = "inset 1px 1px 150px gray";
+            return;
+        }
+        // Make sure the question is unique
+        if (uniqueQuestions.includes(question.question)) {
+            redundantQuestion = question.question;
+            if (checkCount === clueList.length) {
+                checkCount = 0;
+                thisCell.disabled = true;
+                thisCell.style.boxShadow = "inset 1px 1px 150px gray";
+                return;
+            }
+            placeQuestion(thisCell, clueList, dValue);
+        } 
+        else {
+            checkCount++;
+            uniqueQuestions.push(question.question);
 
-        let answerContainer = document.getElementById('answer');
-        let wrapQuestion = document.getElementById('wrap-question');
-        const boardHeight = document.getElementById('trivia-board').scrollHeight;
+            latestQuestion = question;
+            difficultyValue = dValue;
 
-        document.getElementById('question').textContent = question.question;
-        answerContainer.style.display = "inline";
+            let answerContainer = document.getElementById('answer');
+            let wrapQuestion = document.getElementById('wrap-question');
+            const boardHeight = document.getElementById('trivia-board').scrollHeight;
 
-        wrapQuestion.style.height = `${boardHeight-96}px`;
-        wrapQuestion.style.display = 'block';
-        document.getElementById('categories').style.display = 'none';
-        document.getElementById('clues').style.display = 'none';
-        console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
+            document.getElementById('question').textContent = question.question;
+            answerContainer.style.display = "inline";
+
+            wrapQuestion.style.height = `${boardHeight-96}px`;
+            wrapQuestion.style.display = 'block';
+            document.getElementById('categories').style.display = 'none';
+            document.getElementById('clues').style.display = 'none';
+            console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
+        }
     }
         
     // Submit Button: listen for guess submitted (or a click to see game board again after a question is answered)
