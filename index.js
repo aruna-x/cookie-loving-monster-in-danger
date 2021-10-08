@@ -41,21 +41,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // When view toggles to play screen, grab 5 unique categories and display them on page
     const categories = document.querySelectorAll('.category');
     const jCategoryArrayKeys = Object.keys(jServiceCategories);
+    let uniqueCategories = [];
     categories.forEach((category) => {
         checkUnique(category, jCategoryArrayKeys);
     });
 
     // Check categories for uniqueness
     function checkUnique(category, jCategoryArrayKeys) {
-        let uniqueCategories = [];
-        (function loopUnique() {
             // When we have found all five successfully, exit function
             if (uniqueCategories.length === 5) { return; }
 
             const randomKey = jCategoryArrayKeys[Math.floor(Math.random() * jCategoryArrayKeys.length)]
             const redundantKey = Boolean(uniqueCategories.find((el) => el === randomKey));
             if (redundantKey) {
-                loopUnique(category);
+                checkUnique(category, jCategoryArrayKeys);
                 return;
             }
             else if (!redundantKey) {
@@ -63,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 category.textContent = randomKey;
                 return;
             }
-        })();
     }
 
     // When any clue button is clicked ...
