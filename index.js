@@ -18,46 +18,14 @@ const jServiceCategories = {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // Grab 5 unique categories from our object above and display them on game page
-    const categories = document.querySelectorAll('.category');
-    const jCategoryArrayKeys = Object.keys(jServiceCategories);
-    categories.forEach((category) => {
-        checkUnique(category, jCategoryArrayKeys);
-    });
 
-    // When any clue cell is clicked ...
-    const cells = document.querySelectorAll('.cell');
-    cells.forEach((cell) => {
-        cell.addEventListener("click", (e) => {
-            // Display question, enable submit button, refresh answer field in form, etc.
-            let answer = document.getElementById('answer');
-            let submitButton = document.getElementById('submit');
-
-            answer.value = "";
-            answer.focus();
-
-            submitButton.disabled = false;
-            submitButton.textContent = "Submit";
-            submitButton.className = "submit";
-
-            const thisCell = e.target;
-            const cellClassList = thisCell.classList;
-
-            // This determines the category the clicked clue is under and calls next function
-            // Function chain: questionSwitch > placeCategory > grabQuestion > apiCall > placeQuestion ...
-            // placeQuestion calls both postButtonQuestion and moveMonster (which calls confetti() on win)
-            questionSwitch(thisCell, cellClassList);
-        });
-    })
-
-    // Welcome Page JS
+    // Welcome Page
     const playButton = document.getElementById('play-button');
     const instructionsButton = document.getElementById('instructions-button');
-
     playButton.addEventListener('click', toggleView);
     instructionsButton.addEventListener('click', toggleView);
 
+    // Toggles view of welcome page/instruction and the game page based on button clicks
     function toggleView() {
         const welcomePage = document.getElementById('wrap-welcome');
         const gamePage = document.getElementById('wrap-main');
@@ -69,10 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
             gamePage.style.display = "none";
         }
     }
-
-    /**
-     *  FUNCTIONS (in approx. order of use)
-     */
+    
+    // When view toggles to play screen, grab 5 unique categories and display them on page
+    const categories = document.querySelectorAll('.category');
+    const jCategoryArrayKeys = Object.keys(jServiceCategories);
+    categories.forEach((category) => {
+        checkUnique(category, jCategoryArrayKeys);
+    });
 
     // Check categories for uniqueness
     function checkUnique(category, jCategoryArrayKeys) {
@@ -94,6 +65,32 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         })();
     }
+
+    // When any clue button is clicked ...
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach((cell) => {
+        cell.addEventListener("click", (e) => {
+
+            // Display question, enable submit button, refresh answer field in form
+            let answer = document.getElementById('answer');
+            let submitButton = document.getElementById('submit');
+
+            answer.value = "";
+            answer.focus();
+
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit";
+            submitButton.className = "submit";
+
+            // Initiates a code chain that begins with below code determines the category the clicked clue is under
+            const thisCell = e.target;
+            const cellClassList = thisCell.classList;
+            questionSwitch(thisCell, cellClassList);
+        });
+    })
+
+    // Function chain below: questionSwitch > placeCategory > grabQuestion > apiCall > placeQuestion ...
+    // placeQuestion calls both postButtonQuestion and moveMonster (which calls confetti() on win)
 
     // Determines the category a cell belongs to, then places category on the page
     function questionSwitch(thisCell, cellClassList) {
@@ -140,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Takes a category and difficulty, and returns a question
+    // Takes a category and difficulty, and calls placeQuestion to place it on the page
     function apiCall(category, difficultyValue) {
         const category_id = jServiceCategories[category];
         fetch(`https://jservice.io/api/category?id=${category_id}`)
@@ -158,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch(e => console.error(`There was an error with fetch in apiCall: ${e}`));
     }
 
-    // Now we'll display the question instead of the game board
+    // Now we'll display the question and its wrapper instead of the game board
     let latestQuestion;
     let difficultyValue;
     function placeQuestion(question, dValue) {
@@ -179,16 +176,18 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
     }
         
-    // Submit Button: listen for guess submitted (or a click to see game board again)
+    // Submit Button: listen for guess submitted (or a click to see game board again after a question is answered)
     const form = document.getElementById('form')
     form.addEventListener('submit', e => {
         e.preventDefault();
 
-        // If className returns "submit" we are not already displaying another question and can proceed.
+        // If submitClass = "submit", a user is trying to submit a guess
         let submitClass = document.getElementById('submit').className
 
         if (submitClass === "submit") {
             const answerInput = document.getElementById('answer').value;
+
+            // The stringAnalysis helper function is listed below monsterMove
             const checkMatch = stringAnalysis(latestQuestion, answerInput);
 
             switch (difficultyValue) {
@@ -209,33 +208,28 @@ document.addEventListener("DOMContentLoaded", () => {
             
             if (checkMatch) {
                 moveMonster(monsterMove, "forward");
-                postQuestionButton("right");
             }
             else {
                 moveMonster(monsterMove, "backward");
-                postQuestionButton("wrong");
+                
             }
+            postQuestionButton();
         }
-        else {
+        else if ('try-again') {
             // If that className wasn't "submit", we have changed the className to indicate
-            // that user is ready to see board again after attempting an answer. Diplay the board:
+            // that user is ready to see board again after attempting an answer. Display the board:
             document.getElementById('wrap-question').style.display = 'none';
             document.getElementById('categories').style.display = 'contents';
             document.getElementById('clues').style.display = 'contents';
         }
     });
 
-    function postQuestionButton(buttonColor) {
+    // Re-style the submit button to "try again" after any answer is submitted
+    function postQuestionButton() {
         let submitButton = document.getElementById('submit');
         submitButton.textContent = "Try another one!";
         document.getElementById('answer').style.display = "none";
-                
-        if (buttonColor==="wrong") {
-            submitButton.className = "answer-wrong";
-        } 
-        else if (buttonColor === "right") {
-            submitButton.className = "answer-right";
-        }
+        submitButton.className = "try-again";
     }
 
     // Moves the monster to the left or right after a guess
@@ -249,9 +243,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (direction === "forward"){
             question.textContent = "Phew! Correct. That much closer to the cookies!";
             const left = monsterLeftNum + monsterMove;
+
             if (left>=90){
+
+                // Don't allow monster to right anymore!
                 monster.style.marginLeft = `90%`;
+
+                // Start the wiggles
+                monster.classList.add('win-wiggle');
+
+                // The confetti helper function is listed below monsterMove
                 confetti();
+
+                // Display win panel
                 question.textContent = "You did it! And I think you made a friend along the way!!";
                 document.getElementById('monster-win-wrap').style.display = "contents";
                 document.getElementById('wrap-question').style.height = "375px";
@@ -280,6 +284,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+
+
+/**
+ *  HELPER FUNCTIONS (in approx. order of use)
+ */
 
 // Strings matching analysis
 function stringAnalysis(latestQuestion, answerInput) {
@@ -374,7 +383,7 @@ function longestCommonSubstring(s1, s2) {
     }
 }
 
-// Party time!! This code was gratefully borrowed (free source) from the itnerwebs. 
+// Party time!! This code was gratefully borrowed (free source) from the interwebs. 
 // There are no more functions below confetti() in this doc.
 function confetti() {
     class Progress {
