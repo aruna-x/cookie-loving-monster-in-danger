@@ -18,73 +18,110 @@ const jServiceCategories = {
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const categories = document.querySelectorAll('.category');
-    const jCategoryArrayKeys = Object.keys(jServiceCategories);
-    const uniqueCategories = [];
-    categories.forEach((category) => {
-        checkUnique(category);
-    });
 
-    function checkUnique(category) {
-        if (uniqueCategories.length === 5) { return; }
+    // Welcome Page
+    const playButton = document.getElementById('play-button');
+    const instructionsButton = document.getElementById('instructions-button');
+    playButton.addEventListener('click', toggleView);
+    instructionsButton.addEventListener('click', toggleView);
 
-        const randomKey = jCategoryArrayKeys[Math.floor(Math.random() * jCategoryArrayKeys.length)]
-        const redundantKey = Boolean(uniqueCategories.find((el) => el === randomKey));
-        if (redundantKey) {
-            checkUnique(category);
-            return;
-        }
-        else if (!redundantKey) {
-            uniqueCategories.push(randomKey);
-            category.textContent = randomKey;
-            return;
+    // Toggles view of welcome page/instruction and the game page based on button clicks
+    function toggleView() {
+        const welcomePage = document.getElementById('wrap-welcome');
+        const gamePage = document.getElementById('wrap-main');
+        if (welcomePage.style.display === "block") {
+            welcomePage.style.display = "none";
+            gamePage.style.display = "block";
+        } else if (welcomePage.style.display === "none") {
+            welcomePage.style.display = "block";
+            gamePage.style.display = "none";
         }
     }
+    
+    // When view toggles to play screen, grab 5 unique categories and display them on page
+    const categories = document.querySelectorAll('.category');
+    const jCategoryArrayKeys = Object.keys(jServiceCategories);
+    categories.forEach((category) => {
+        checkUnique(category, jCategoryArrayKeys);
+    });
 
+    // Check categories for uniqueness
+    function checkUnique(category, jCategoryArrayKeys) {
+        let uniqueCategories = [];
+        (function loopUnique() {
+            // When we have found all five successfully, exit function
+            if (uniqueCategories.length === 5) { return; }
+
+            const randomKey = jCategoryArrayKeys[Math.floor(Math.random() * jCategoryArrayKeys.length)]
+            const redundantKey = Boolean(uniqueCategories.find((el) => el === randomKey));
+            if (redundantKey) {
+                loopUnique(category);
+                return;
+            }
+            else if (!redundantKey) {
+                uniqueCategories.push(randomKey);
+                category.textContent = randomKey;
+                return;
+            }
+        })();
+    }
+
+    // When any clue button is clicked ...
     const cells = document.querySelectorAll('.cell');
-
     cells.forEach((cell) => {
         cell.addEventListener("click", (e) => {
-            // When a clue is clicked, enable the button and automatically move cursor to answer input field
-            document.getElementById('answer').value = "";
-            document.getElementById('submit').disabled = false;
-            document.getElementById('submit').textContent = "Submit";
-            document.getElementById('submit').className = "submit";
-            document.getElementById('answer').focus();
+
+            // Display question, enable submit button, refresh answer field in form
+            let answer = document.getElementById('answer');
+            let submitButton = document.getElementById('submit');
+
+            answer.value = "";
+            answer.focus();
+
+            submitButton.disabled = false;
+            submitButton.textContent = "Submit";
+            submitButton.className = "submit";
+
+            // Initiates a code chain that begins with below code determines the category the clicked clue is under
             const thisCell = e.target;
             const cellClassList = thisCell.classList;
             questionSwitch(thisCell, cellClassList);
         });
     })
 
+    // Function chain below: questionSwitch > placeCategory > grabQuestion > apiCall > placeQuestion ...
+    // placeQuestion calls both postButtonQuestion and moveMonster (which calls confetti() on win)
+
+    // Determines the category a cell belongs to, then places category on the page
     function questionSwitch(thisCell, cellClassList) {
-        let category;
         switch (true) {
             case (cellClassList.contains("category-1-cell")):
-                category = document.getElementById('category1').textContent;
-                grabQuestion(thisCell, category);
+                placeCategory(1, thisCell);
                 break;
             case (cellClassList.contains("category-2-cell")):
-                category = document.getElementById('category2').textContent;
-                grabQuestion(thisCell, category);
+                placeCategory(2, thisCell);
                 break;
             case (cellClassList.contains("category-3-cell")):
-                category = document.getElementById('category3').textContent;
-                grabQuestion(thisCell, category);
+                placeCategory(3, thisCell);
                 break;
             case (cellClassList.contains("category-4-cell")):
-                category = document.getElementById('category4').textContent;
-                grabQuestion(thisCell, category);
+                placeCategory(4, thisCell);
                 break;
             case (cellClassList.contains("category-5-cell")):
-                category = document.getElementById('category5').textContent;
-                grabQuestion(thisCell, category);
+                placeCategory(5, thisCell);
                 break;
             default:
                 break;
         }
     }
 
+    // Places a determined category on the page, then grab a valid corresponding question
+    function placeCategory(num, thisCell) {
+        let category = document.getElementById(`category${num}`).textContent;
+        grabQuestion(thisCell, category);
+    }
+
+    // Determines the difficulty, then calls the api to find a question
     function grabQuestion(thisCell, category) {
         const difficulty = thisCell.textContent;
         switch (difficulty) {
@@ -100,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Takes a category and difficulty and returns a question
+    // Takes a category and difficulty, and calls placeQuestion to place it on the page
     function apiCall(category, difficultyValue) {
         const category_id = jServiceCategories[category];
         fetch(`https://jservice.io/api/category?id=${category_id}`)
@@ -113,132 +150,144 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 const question = clueList[Math.floor(Math.random() * clueList.length)];
-                placeQuestion(question);
+                placeQuestion(question, difficultyValue);
             })
             .catch(e => console.error(`There was an error with fetch in apiCall: ${e}`));
     }
 
+    // Now we'll display the question and its wrapper instead of the game board
     let latestQuestion;
-
-    function placeQuestion(question) {
+    let difficultyValue;
+    function placeQuestion(question, dValue) {
         latestQuestion = question;
-        let questionContainer = document.getElementById('question');
-        questionContainer.textContent = question.question;
-        document.getElementById('answer').style.display = "inline";
+        difficultyValue = dValue;
 
-            const boardHeight = document.getElementById('trivia-board').scrollHeight;
-            document.getElementById('wrap-question').style.height = `${boardHeight-96}px`;
-            document.getElementById('wrap-question').style.display = 'block';
-            document.getElementById('categories').style.display = 'none';
-            document.getElementById('clues').style.display = 'none';
-            console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
-        }
+        let answerContainer = document.getElementById('answer');
+        let wrapQuestion = document.getElementById('wrap-question');
+        const boardHeight = document.getElementById('trivia-board').scrollHeight;
+
+        document.getElementById('question').textContent = question.question;
+        answerContainer.style.display = "inline";
+
+        wrapQuestion.style.height = `${boardHeight-96}px`;
+        wrapQuestion.style.display = 'block';
+        document.getElementById('categories').style.display = 'none';
+        document.getElementById('clues').style.display = 'none';
+        console.log(question.answer.replace(/<[^>]*>?/gm, '').replace(/"/g, '').replace(/'/g, ''));
+    }
         
-        const form = document.getElementById('form')
-        form.addEventListener('submit', e => {
-            e.preventDefault();
+    // Submit Button: listen for guess submitted (or a click to see game board again after a question is answered)
+    const form = document.getElementById('form')
+    form.addEventListener('submit', e => {
+        e.preventDefault();
 
-            let submitClass = document.getElementById('submit').className
+        // If submitClass = "submit", a user is trying to submit a guess
+        let submitClass = document.getElementById('submit').className
 
-            if (submitClass === "submit") {
-                const answerInput = document.getElementById('answer').value;
-                const difficulty = latestQuestion.value;
-            
-                if (difficulty > 400) {
+        if (submitClass === "submit") {
+            const answerInput = document.getElementById('answer').value;
+
+            // The stringAnalysis helper function is listed below monsterMove
+            const checkMatch = stringAnalysis(latestQuestion, answerInput);
+
+            switch (difficultyValue) {
+                case "600":
                     monsterMove = 30;
-                } else if (difficulty > 200 && difficulty <= 400) {
+                    break;
+                case "400":
                     monsterMove = 20;
-                } else if (difficulty <= 200) {
+                    break;
+                case "200":
                     monsterMove = 10;
-                }
+                    break;
+                default:
+                    monsterMove = 0;
+                    console.log("Could not calculate monsterMove.");
+                    break;
+            }
+            
+            if (checkMatch) {
+                moveMonster(monsterMove, "forward");
+            }
+            else {
+                moveMonster(monsterMove, "backward");
                 
-                const checkMatch = stringAnalysis(latestQuestion, answerInput);
-
-                if (checkMatch) {
-                    moveMonster(monsterMove, "forward");
-                    postQuestionButton("right");
-                }
-                else {
-                    moveMonster(monsterMove, "backward");
-                    postQuestionButton("wrong");
-                }
+            }
+            postQuestionButton();
         }
-        else {
+        else if ('try-again') {
+            // If that className wasn't "submit", we have changed the className to indicate
+            // that user is ready to see board again after attempting an answer. Display the board:
             document.getElementById('wrap-question').style.display = 'none';
             document.getElementById('categories').style.display = 'contents';
             document.getElementById('clues').style.display = 'contents';
         }
-
-            function postQuestionButton(buttonColor) {
-                document.getElementById('answer').style.display = "none";
-                document.getElementById('submit').textContent = "Try another one!";
-                if (buttonColor==="wrong") {
-                    document.getElementById('submit').className = "answer-wrong";
-                } 
-                else if (buttonColor === "right") {
-                    document.getElementById('submit').className = "answer-right";
-                }
-        }
     });
 
-        function moveMonster(monsterMove, direction) {
-            let monsterLeft = document.getElementById("cookie-monster").style.marginLeft;
-            let monsterLeftNum = parseInt(monsterLeft, 10);
-            if (direction === "forward"){
-                document.getElementById('question').textContent = "Phew! Correct. That much closer to the cookies!";
-                const left = monsterLeftNum + monsterMove;
-                if (left>=90){
-                    document.getElementById("cookie-monster").style.marginLeft = `90%`;
-                    confetti();
-                    document.getElementById('question').textContent = "You did it! And I think you made a friend along the way!!";
-                    document.getElementById('monster-win-wrap').style.display = "contents";
-                    document.getElementById('wrap-question').style.height = "375px";
-                    document.getElementById('submit').style.visibility = "hidden";
-                }
-                else {
-                    document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
-                    document.getElementById("cookie-monster").classList.add('forward-wiggle');
-                    setTimeout(()=>{document.getElementById("cookie-monster").classList.remove('forward-wiggle');}, 3000);
-                }
-            }
-            else if (direction === "backward"){
-                document.getElementById('question').textContent = "Wahhh! That was incorrect!";
-                const left = monsterLeftNum - monsterMove;
-                if (left<0){
-                    document.getElementById("cookie-monster").style.marginLeft = `0%`;
-                    document.getElementById("cookie-monster").classList.add('backward-wiggle');
-                    setTimeout(()=>{document.getElementById("cookie-monster").classList.remove('backward-wiggle');}, 3000);
-                }
-                else {
-                    document.getElementById("cookie-monster").style.marginLeft = `${left}%`;
-                    document.getElementById("cookie-monster").classList.add('backward-wiggle');
-                    setTimeout(()=>{document.getElementById("cookie-monster").classList.remove('backward-wiggle');}, 3000);
-                }
-        }
+    // Re-style the submit button to "try again" after any answer is submitted
+    function postQuestionButton() {
+        let submitButton = document.getElementById('submit');
+        submitButton.textContent = "Try another one!";
+        document.getElementById('answer').style.display = "none";
+        submitButton.className = "try-again";
     }
 
-    // Welcome Page JS
-    const playButton = document.getElementById('play-button');
-    const instructionsButton = document.getElementById('instructions-button');
+    // Moves the monster to the left or right after a guess
+    function moveMonster(monsterMove, direction) {
+        let question = document.getElementById('question');
+        let monster = document.getElementById("cookie-monster");
 
-    playButton.addEventListener('click', toggleView);
-    instructionsButton.addEventListener('click', toggleView);
+        let monsterLeft = monster.style.marginLeft;
+        let monsterLeftNum = parseInt(monsterLeft, 10);
 
-    function toggleView() {
-        const welcomePage = document.getElementById('wrap-welcome');
-        const gamePage = document.getElementById('wrap-main');
-        if (welcomePage.style.display === "block") {
-            welcomePage.style.display = "none";
-            gamePage.style.display = "block";
-        } else if (welcomePage.style.display === "none") {
-            welcomePage.style.display = "block";
-            gamePage.style.display = "none";
+        if (direction === "forward"){
+            question.textContent = "Phew! Correct. That much closer to the cookies!";
+            const left = monsterLeftNum + monsterMove;
+
+            if (left>=90){
+
+                // Don't allow monster to right anymore!
+                monster.style.marginLeft = `90%`;
+
+                // Start the wiggles
+                monster.classList.add('win-wiggle');
+
+                // The confetti helper function is listed below monsterMove
+                confetti();
+
+                // Display win panel
+                question.textContent = "You did it! And I think you made a friend along the way!!";
+                document.getElementById('monster-win-wrap').style.display = "contents";
+                document.getElementById('wrap-question').style.height = "375px";
+                document.getElementById('submit').style.visibility = "hidden";
+            }
+            else {
+                monster.style.marginLeft = `${left}%`;
+                monster.classList.add('forward-wiggle');
+                setTimeout(()=>{monster.classList.remove('forward-wiggle');}, 3000);
+            }
+        }
+
+        else if (direction === "backward"){
+            question.textContent = "Wahhh! That was incorrect!";
+            const left = monsterLeftNum - monsterMove;
+            if (left<0){
+                monster.style.marginLeft = `0%`;
+                monster.classList.add('backward-wiggle');
+                setTimeout(()=>{monster.classList.remove('backward-wiggle');}, 3000);
+            }
+            else {
+                monster.style.marginLeft = `${left}%`;
+                monster.classList.add('backward-wiggle');
+                setTimeout(()=>{monster.classList.remove('backward-wiggle');}, 3000);
+            }
         }
     }
 });
 
+
 /**
- *  HELPER FUNCTIONS
+ *  HELPER FUNCTIONS (in approx. order of use)
  */
 
 // Strings matching analysis
@@ -254,21 +303,25 @@ function stringAnalysis(latestQuestion, answerInput) {
     const noPunctuationInput = answerInput.replace(/<[^>]*>?/gm, '').replace(/[~!@#$%^&*()_+-={}|;"']/g, '');
     const lowerCaseInput = noPunctuationInput.toLowerCase();
 
-    // Get Levenshtein distance (criteria <= 2 ?)
-    // This accounts for misspellings
-    const levDist = levenshteinDistance(lowerCaseAnswer, lowerCaseInput);
+    // If the answer is only 1 or 2 letters, then just see if it's inlcuded in the input 
+    // and make sure input is sufficiently short
+    if (lowerCaseAnswer.length < 3){
+        return lowerCaseInput.includes(lowerCaseAnswer) && (lowerCaseInput.length < 4);
+    }
+    // Else let's do some fancier string analysis
+    else {
+        const levDist = levenshteinDistance(lowerCaseAnswer, lowerCaseInput);
 
-    // Get longest matching string (criteria >= 5 ?)
-    // This accounts for missing words
-    const substring = commonSubstring(lowerCaseAnswer, lowerCaseInput);
+        const substring = longestCommonSubstring(lowerCaseAnswer, lowerCaseInput);
 
-    // If Lev dist is < 2 -OR- longest matching string >= 5, assume good answer. Test.
-    return (levDist < 3 || substring > 4) ? true : false;
+        // If Lev dist is < 2 -OR- longest matching string >= 5, assume good answer. Test.
+        return (levDist < 3 || substring > 4) ? true : false;
+    }
 }
 
 
 // Calculates Levenshtein Distance (num of insertions, deletions, and subs)
-function levenshteinDistance(lowerCaseAnswer = "apple", lowerCaseInput = "app") {
+function levenshteinDistance(lowerCaseAnswer = "", lowerCaseInput = "") {
     // This creates a matrix. Every element of the "track" array is itself an array
     const matrix = Array(lowerCaseInput.length + 1).fill(null).map(() =>
         Array(lowerCaseAnswer.length + 1).fill(null)
@@ -315,7 +368,7 @@ function levenshteinDistance(lowerCaseAnswer = "apple", lowerCaseInput = "app") 
  */
 
 // Calculates the longest matching substring given an array of strings
-function commonSubstring(s1, s2) {
+function longestCommonSubstring(s1, s2) {
     let shorter = s1.length > s2.length ? s2 : s1;
     let longer = s1.length < s2.length ? s2 : s1;
     if (shorter === "" || longer === "") { return 0 }
@@ -330,6 +383,8 @@ function commonSubstring(s1, s2) {
     }
 }
 
+// Party time!! This code was gratefully borrowed (free source) from the interwebs. 
+// There are no more functions below confetti() in this doc.
 function confetti() {
     class Progress {
     constructor(param = {}) {
