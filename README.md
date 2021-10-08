@@ -43,6 +43,7 @@ _The question input section includes string analysis to recognize correct answer
     * <i>Hamlet</i> vs Hamlet
 * _Punctuation differences_
     * _Little Rock, Arkansas vs Little Rock Arkansas_
+    * _212° Fahrenheit vs 212 degrees Fahrenheit_
 * _Common misspellings or typos_
     * _piece vs peice_
 * _Partial answer text_
