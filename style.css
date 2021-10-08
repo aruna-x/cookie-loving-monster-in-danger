@@ -59,34 +59,36 @@ p.header {
     /* margin-left is defined in html so we can access it in js ... */
 }
 
+.win-wiggle {
+    animation-name: winWiggle;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
 .forward-wiggle {
     animation-name: forwardWiggle;
     animation-duration: 4s;
 }
-
 .backward-wiggle {
     animation-name: backwardWiggle;
     animation-duration: 4s;
 }
-
 /* animation */
-@keyframes backwardWiggle {
+@keyframes winWiggle {
     0% {-webkit-transform: rotate(0deg);}
-    1.5% {-webkit-transform: rotate(-5deg);}
-    2.5% {-webkit-transform: rotate(-10deg);}
-    4% {-webkit-transform: rotate(-15deg);}
-    5.5% {-webkit-transform: rotate(-20deg);}
-    7% {-webkit-transform: rotate(-20deg);}
-    9% {-webkit-transform: rotate(-20deg);}
-    10.5% {-webkit-transform: rotate(-4deg);}
-    11.5% {-webkit-transform: rotate(4deg);}
-    13% {-webkit-transform: rotate(0deg);}
-    14.5% {-webkit-transform: rotate(-4deg);}
-    16% {-webkit-transform: rotate(4deg);}
-    18% {-webkit-transform: rotate(0deg);}
+    7% {-webkit-transform: rotate(-4deg);}
+    14% {-webkit-transform: rotate(4deg);}
+    21% {-webkit-transform: rotate(0deg);}
+    28% {-webkit-transform: rotate(-4deg);}
+    35% {-webkit-transform: rotate(4deg);}
+    42% {-webkit-transform: rotate(0deg);}
+    49% {-webkit-transform: rotate(-4deg);}
+    56% {-webkit-transform: rotate(4deg);}
+    63% {-webkit-transform: rotate(0deg);}
+    70% {-webkit-transform: rotate(-4deg);}
+    77% {-webkit-transform: rotate(4deg);}
+    84% {-webkit-transform: rotate(0deg);}
     100% {-webkit-transform: rotate(0deg);}
 }
-
 @keyframes forwardWiggle {
     0% {-webkit-transform: rotate(0deg);}
     1.5% {-webkit-transform: rotate(5deg);}
@@ -95,6 +97,22 @@ p.header {
     5.5% {-webkit-transform: rotate(20deg);}
     7% {-webkit-transform: rotate(20deg);}
     9% {-webkit-transform: rotate(20deg);}
+    10.5% {-webkit-transform: rotate(-4deg);}
+    11.5% {-webkit-transform: rotate(4deg);}
+    13% {-webkit-transform: rotate(0deg);}
+    14.5% {-webkit-transform: rotate(-4deg);}
+    16% {-webkit-transform: rotate(4deg);}
+    18% {-webkit-transform: rotate(0deg);}
+    100% {-webkit-transform: rotate(0deg);}
+}
+@keyframes backwardWiggle {
+    0% {-webkit-transform: rotate(0deg);}
+    1.5% {-webkit-transform: rotate(-5deg);}
+    2.5% {-webkit-transform: rotate(-10deg);}
+    4% {-webkit-transform: rotate(-15deg);}
+    5.5% {-webkit-transform: rotate(-20deg);}
+    7% {-webkit-transform: rotate(-20deg);}
+    9% {-webkit-transform: rotate(-20deg);}
     10.5% {-webkit-transform: rotate(-4deg);}
     11.5% {-webkit-transform: rotate(4deg);}
     13% {-webkit-transform: rotate(0deg);}
@@ -198,7 +216,7 @@ button#submit.submit {
     color: rgb(226, 202, 202);
 }
 
-button.answer-wrong {
+button.try-again {
     font-size: 15px;
     font-family: Delight Candles;
     border-radius: 10px;
@@ -206,13 +224,6 @@ button.answer-wrong {
     color: rgb(226, 202, 202);
 }
 
-button.answer-right {
-    font-size: 15px;
-    font-family: Delight Candles;
-    border-radius: 10px;
-    background-color: #d81159;
-    color: rgb(226, 202, 202);
-}
 
 #question {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
