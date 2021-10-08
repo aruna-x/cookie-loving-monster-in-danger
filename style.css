@@ -8,11 +8,6 @@
     src: url(./fonts/Delight_Candles.ttf);
 }
 
-/* @font-face {
-    font-family: College-Star-Line-LoveSVG;
-    src: url(./fonts/College_Star_Line_LoveSVG.ttf);
-} */
-
 body {
     background: #8f2d56; 
     background-image: url(./images/cookie-bullet.svg);
@@ -113,7 +108,6 @@ p.header {
     height: 110px;
     float: right;
     margin-top: -80px;
-    /* shadow on cookies? */
 }
 
 #ground {
@@ -125,7 +119,6 @@ p.header {
     margin-left: auto;
     border-radius: 10px;
     box-shadow: 0 0 20px black;
-    /* border: 2px solid #8f2d56; */
     background:linear-gradient(top, #73d2de 0%, #218380 50%);
     background:-webkit-linear-gradient(top, #73d2de 0%, #218380 50%);
 }
@@ -135,7 +128,6 @@ p.header {
 }
 
 #trivia-board {
-    /* border: 2px solid #218380;  */
     border-radius: 10px;
     text-align: center;
     background-color: #222;
@@ -221,43 +213,6 @@ button.answer-right {
     background-color: #d81159;
     color: rgb(226, 202, 202);
 }
-/* #wrap-cookie-bite {
-    display: inline;
-    float: right;
-}
-
-#circle1 {
-  width: 50px;
-  height: 50px;
-  background: #b2daf5;
-  border-radius: 50%;
-  position: relative;
-  margin-top: -57px;
-  margin-right: -5px;
-}
-
-#circle2 {
-    width: 30px;
-    height: 20px;
-    background: #b2daf5;
-    border-radius: 50%;
-    position: relative;
-    margin-top: -47px;
-    margin-right: 0px;
-    margin-left: -5px;
-}
-
-#circle3 {
-    width: 25px;
-    height: 30px;
-    background: #b2daf5;
-    border-radius: 50%;
-    position: relative;
-    margin-top: 0px;
-    margin-right: -60px;
-    margin-left: 30px;
-} */
-
 
 #question {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -279,21 +234,6 @@ button.answer-right {
     margin: auto;
 }
 
-
-/* #submit {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    padding: 8px;
-    background-color:#8ab6d3;
-    border: none;
-    color: #344b5a;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.445);
-    margin-left: 10px;
-    border-radius: 2px;
-} */
-
-/* #submit:hover {
-    background-color:#92c5e7;
-} */
 
 div.cheat-code {
     margin-right: auto;
@@ -416,9 +356,6 @@ button:hover {
     cursor: pointer;
 }
 
-/* .parent {
-    width: 100px;
-  } */
 
 img#monster-win {
     display: block;

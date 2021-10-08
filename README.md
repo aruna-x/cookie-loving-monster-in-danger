@@ -8,18 +8,19 @@
 
 * _HTML_
 * _CSS_
+    * _Keyframes_
 * _Javascript_
-* _Regex?_
-* _Keyframes?_
-* _----need others here?_
+    * _Regex_
+    * _Levenshtein Distance_
+    * _Substring analysis_
 
 ## Description
 
 _Use of the website begins with a welcome page including the instructions for how to play the game. Clicking the "Let's Play!" button takes the user to the game play screen._
 
-_On the game play screen, the user can see a trivia board with five categories and question difficulty options ranging from easy to medium to hard. The trivia board pulls data from a free, public database https://jservice.io. Categories from the database are populated into the first row of the trivia board. Questions from these categories are used in the column below based on difficulty level._
+_On the game play screen, the user can view a trivia board with five categories and question difficulty options ranging from easy to medium to hard. The trivia board pulls data from a free, public database https://jservice.io. Categories from the database are populated into the first row of the trivia board. Questions from these categories are used in the columns below based on difficulty level._
 
-_When the user clicks on a question, the trivia board is replaced with a display of the question and an answer input section. The user can type in the answer and click the submit button. If the question is correct, the blue monster will move toward the plate of cookies. If the answer is wrong, he will move backward. The length of movement is smallest for easy questions and greatest for hard questions. The monster cannot move backward beyond the starting point. After the answer is submitted and the monster moves, the question display becomes text indicating whether the user answered correctly and a button for returning to the trivia board view to try another question. If the user successfully answers enough questions to move the monster completely across the screen to the plate of cookies, confetti falls on the screen, the trivia board and question display become a celebration view with an image of quote about cookies and friendship, and the game is over. The page must be refreshed to play again._ 
+_When the user clicks on a question, the trivia board is replaced with a display of the question and an answer input section. The user can type in the answer and click the submit button. If the question is correct, the blue monster will move toward the plate of cookies. If the answer is wrong, he will move backward. The length of movement is smallest for easy questions and greatest for hard questions. The monster cannot move backward beyond the starting point. After the answer is submitted and the monster moves, the question display becomes text indicating whether the user answered correctly and a button for returning to the trivia board view to try another question. If the user successfully answers enough questions to move the monster completely across the screen to the plate of cookies, confetti falls on the screen, the trivia board and question display become a celebration view with an image of a quote about cookies and friendship, and the game is over. The page must be refreshed to play again._ 
 
 _The full page includes the following functionality:_
 * _A full page toggle between a welcome page view and a game page view_
@@ -37,7 +38,7 @@ _The trivia board includes the following functionality:_
 * _Analyzing numeric values for difficulty level in the trivia API, converting those values to a numeric range, and assigning questions within those ranges to easy, medium, and hard levels on the trivia board_
 * _Toggling view of multiple div sections based on use case in the game_
 
-_The question input section includes extensive string analysis to recognize correct answers in the following common API/user-input conflict cases when those conflicts do not affect the accuracy of the answer:_
+_The question input section includes string analysis to recognize correct answers in the following common API/user-input conflict cases when those conflicts do not affect the accuracy of the answer:_
 * _Text formatting or HTML snippets in some API answers_
     * <i>Hamlet</i> vs Hamlet
 * _Punctuation differences_
@@ -48,9 +49,9 @@ _The question input section includes extensive string analysis to recognize corr
     * _Pablo Picasso vs Picasso_
 * _Variations of common abbreviations_
     * _Mt. Kenya vs Mount Kenya_
-* _Variations in number _
+* _Variations in number_
     * _octopi vs octopus_
-* Use of articles: a, and, the
+* _Use of articles: a, and, the_
     * _the Federalist Papers vs Federalist Papers_
 
 ## Setup/Installation Requirements
