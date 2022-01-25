@@ -65,7 +65,7 @@ _The question input section includes string analysis to recognize correct answer
 
 * _Confetti does not fall on the full screen if developer tools are opened in the window._
 
-## License
+## Disclaimer
 
 _"Cookie-Loving Monster in Danger!" is not affiliated with Jeopardy! or Sesame Street._ 
 
