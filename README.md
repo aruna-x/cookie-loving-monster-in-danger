@@ -6,7 +6,8 @@
 
 ## Live Site
 
-Play Cookie-Loving Monster In Danger! here: https://aruna-x.github.io/cookie-loving-monster-in-danger/
+* Play Cookie-Loving Monster In Danger!: https://aruna-x.github.io/cookie-loving-monster-in-danger/
+* Watch a demo of game play: https://vimeo.com/manage/videos/670021116/8d9ee7485e 
 
 ## Technologies Used
 
